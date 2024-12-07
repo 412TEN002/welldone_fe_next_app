@@ -1,4 +1,4 @@
-import { withTV } from 'tailwind-variants/dist/transformer.js';
+import { withTV } from 'tailwind-variants/transformer';
 import type { Config } from 'tailwindcss';
 
 export default withTV({
