@@ -5,7 +5,7 @@
   ],
   "plugins": ["prettier"],  // Prettier 플러그인 활성화
   "rules": {
-    "prettier/prettier": ["error", { "singleQuote": true, "semi": true }],  // Prettier 규칙 적용
+    "prettier/prettier": ["error", { "singleQuote": false, "semi": true }],  // Prettier 규칙 적용
     "react-hooks/exhaustive-deps": "off"
   }
 }
