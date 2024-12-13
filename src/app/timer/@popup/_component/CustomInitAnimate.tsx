@@ -35,6 +35,7 @@ export default function CustomInitAnimate({ children }: Props) {
         >
           <motion.div
             variants={variants}
+            initial="initial"
             animate="animate"
             exit="exit"
             style={{
