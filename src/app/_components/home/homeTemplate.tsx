@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { integrationOption } from "@/app/_query-options/integration";
 import FilterIcon from "@/assets/icon/filter.svg";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -13,6 +13,7 @@ export default function HomeTemplate() {
   const { data } = useSuspenseQuery(integrationOption);
   const [filterId, setFilterId] = useState<null | number>(null);
 
+  const filteringData = useMemo(() => {}, [filterId]);
   return (
     <Dialog.Root>
       <div className="h-full w-full bg-primary">
