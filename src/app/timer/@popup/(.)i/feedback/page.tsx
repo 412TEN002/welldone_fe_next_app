@@ -7,7 +7,7 @@ import * as styles from "./page.css";
 export default function Page() {
   return (
     <section className={styles.section()}>
-      <CustomTitleAction name="브로콜리" />
+      <CustomTitleAction />
       <article className={styles.itemLayer()}>
         <CustomItemGroupAction />
       </article>

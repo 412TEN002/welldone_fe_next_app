@@ -15,7 +15,7 @@ export const section = tv({
 });
 
 export const itemLayer = tv({
-  base: ["mt-[38px]", "mb-[65px]", "w-full"],
+  base: ["mt-[38px]", "mb-[65px]", "w-full", "relative"],
 });
 
 export const buttonLayer = tv({
