@@ -1,3 +1,5 @@
+import styles from "./layout.module.css";
+
 type Props = {
   children: React.ReactNode;
   popup: React.ReactNode;
@@ -5,9 +7,9 @@ type Props = {
 
 export default function TimerLayout({ children, popup }: Props) {
   return (
-    <div>
+    <main className={styles.main}>
       {children}
       {popup}
-    </div>
+    </main>
   );
 }
