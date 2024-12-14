@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Image from "next/image";
 import { useState } from "react";
 import Refresh from "@/assets/icon/refresh.svg";
 import { categoryOption } from "@/query-options/category";
@@ -26,15 +27,16 @@ export function HomeFilter({ filterId, onFilterIdChange }: HomeFilterProps) {
         식재료 종류를 선택해주세요
       </Dialog.Title>
       <div className="grid w-full grid-cols-3 gap-3 p-[18px] pb-[46px]">
-        {data.map(({ id, name }) => (
+        {data.map(({ id, name, icon_url }) => (
           <button
             key={id}
             className={clsx(
-              "flex items-center justify-center gap-[14px] rounded-lg py-[25px] font-bold",
+              "flex flex-col items-center justify-center gap-[14px] rounded-lg py-[25px] font-bold",
               id !== currentId ? "bg-tabInvert text-primary" : "bg-tab text-primaryInvert",
             )}
             onClick={() => setId(id)}
           >
+            <Image alt={name} width={30} height={30} src={icon_url} />
             {name}
           </button>
         ))}

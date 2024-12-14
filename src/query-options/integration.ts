@@ -6,7 +6,7 @@ export interface IntegrationType {
   category_id: number;
   color_theme: "black" | "white";
   home_icon_url: string;
-  nutrition_tags: { id: number; name: string; description: string }[];
+  icon_url: string;
 }
 
 export const integrationOption = queryOptions({
