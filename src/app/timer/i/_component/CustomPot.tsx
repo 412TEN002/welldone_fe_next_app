@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import FireL from "@/app/icons/timer/fire-on-l.svg";

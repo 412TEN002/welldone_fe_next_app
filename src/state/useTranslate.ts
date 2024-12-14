@@ -48,7 +48,7 @@ export const useSelect = create<SelectState & SelectAction>((set) => ({
     p: "‘9 또는 강불’에서 물이 끓으면 아래의 화력 가이드에 따라 불을 조절한 뒤, 시작 버튼을 눌러 주세요.",
     e: "데친 후 바로 찬물에 헹궈주면 남은 열로 익는 현상을 방지하고, 식감과 색을 유지할 수 있습니다.",
   },
-  make: "steamy",
+  make: "pot",
   fire: "h",
 
   setSelect: (name, icon, time, tip, make, fire) =>
