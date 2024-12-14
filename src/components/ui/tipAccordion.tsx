@@ -1,3 +1,5 @@
+"use client";
+
 import { tv } from "tailwind-variants";
 import ArrowDown from "@/assets/icon/arrow-down.svg";
 import ChefHat from "@/assets/icon/chef-hat.svg";
