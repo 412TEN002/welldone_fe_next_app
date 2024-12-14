@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { BaseSyntheticEvent, useEffect, useRef, useState } from "react";
 import { useDebounce } from "react-use";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
@@ -52,7 +54,14 @@ export const HomeCombobox = () => {
             </CommandEmpty>
           ) : null}
           {Array.isArray(data)
-            ? data.map(({ id, name }) => <CommandItem key={id}>{name}</CommandItem>)
+            ? data.map(({ id, name, icon_url }) => (
+                <Link key={id} href={`/d/${id}`}>
+                  <CommandItem className="flex items-center gap-2">
+                    <Image width={20} height={20} alt={name} src={icon_url} />
+                    {name}
+                  </CommandItem>
+                </Link>
+              ))
             : null}
         </CommandList>
       )}

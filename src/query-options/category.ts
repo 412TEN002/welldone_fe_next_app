@@ -4,8 +4,7 @@ export interface CategoryType {
   id: number;
   name: string;
   description: string;
-  icon_key: string;
-  icon_urls: {};
+  icon_url: string;
 }
 export const categoryOption = queryOptions({
   queryKey: ["category"],
