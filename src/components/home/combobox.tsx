@@ -2,18 +2,21 @@
 
 import { BaseSyntheticEvent, useEffect, useRef, useState } from "react";
 import { useDebounce } from "react-use";
-import { integrationSearchOption } from "@/app/_query-options/integration";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { integrationSearchOption } from "@/query-options/integration";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const HomeCombobox = () => {
   const [value, setValue] = useState("");
   const [debounceValue, setDebounceValue] = useState(value);
   useDebounce(() => setDebounceValue(value), 20, [value]);
-  const { data } = useSuspenseQuery(integrationSearchOption(debounceValue));
+
+  const { data } = useQuery(integrationSearchOption(debounceValue));
   const [open, setOpen] = useState(false);
+
   const ref = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleClick = (event: BaseSyntheticEvent | MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target)) {

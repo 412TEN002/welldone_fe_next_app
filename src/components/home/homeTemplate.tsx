@@ -2,20 +2,20 @@
 
 import isNil from "lodash-es/isNil";
 import { useMemo, useState } from "react";
-import { integrationOption } from "@/app/_query-options/integration";
 import FilterIcon from "@/assets/icon/filter.svg";
+import { integrationOption } from "@/query-options/integration";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { HomeAnimation } from "./animation";
 import { HomeCombobox } from "./combobox";
 import { HomeFilter } from "./filter";
 
-export default function HomeTemplate() {
+export function HomeTemplate() {
   const { data } = useSuspenseQuery(integrationOption);
   const [filterId, setFilterId] = useState<null | number>(null);
 
   const filteringData = useMemo(
-    () => (isNil(filterId) ? data : data.filter(({ category: { id } }) => id === filterId)),
+    () => (isNil(filterId) ? data : data.filter(({ category_id }) => category_id === filterId)),
     [filterId],
   );
 
