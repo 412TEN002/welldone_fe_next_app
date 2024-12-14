@@ -1,20 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import isNil from "lodash-es/isNil";
+import { useMemo, useState } from "react";
+import { integrationOption } from "@/app/_query-options/integration";
 import FilterIcon from "@/assets/icon/filter.svg";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { HomeAnimation } from "./animation";
+import { HomeCombobox } from "./combobox";
 import { HomeFilter } from "./filter";
-import { HomeCombobox } from "./input";
 
 export default function HomeTemplate() {
-  // const { data } = useSuspenseQuery(integrationOption);
+  const { data } = useSuspenseQuery(integrationOption);
   const [filterId, setFilterId] = useState<null | number>(null);
+
+  const filteringData = useMemo(
+    () => (isNil(filterId) ? data : data.filter(({ category: { id } }) => id === filterId)),
+    [filterId],
+  );
 
   return (
     <Dialog.Root>
       <div className="h-full w-full bg-primary">
-        <div className="flex gap-2 p-5">
+        <div className="absolute flex h-full w-full gap-2 p-5">
           <HomeCombobox />
           <Dialog.Trigger className="h-[40px] rounded-[10px] bg-secondary p-2">
             <FilterIcon />

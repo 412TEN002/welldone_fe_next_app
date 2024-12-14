@@ -22,11 +22,6 @@ export default withTV({
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
     },
   },
   safelist: [
@@ -34,7 +29,7 @@ export default withTV({
       pattern: /bg-(tab|tabInvert)_bg/,
     },
     {
-      pattern: /text-(tab|tabInvert)_text/,
+      pattern: /text-(primary|primaryInvert)_text/,
     },
   ],
   plugins: [require("tailwindcss-animate")],
