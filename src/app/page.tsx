@@ -1,13 +1,15 @@
-"use client";
-
-import { HomeCombobox } from "./_components/home/input";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import HomeTemplate from "./_components/home/homeTemplate";
+import { getQueryClient } from "./queryClient";
 
 export default function Home() {
+  const queryClient = getQueryClient();
+  // void queryClient.prefetchQuery(categoryOption);
+  // void queryClient.prefetchQuery(integrationOption);
+
   return (
-    <div className="bg-primary h-full w-full">
-      <div className="p-5">
-        <HomeCombobox />
-      </div>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <HomeTemplate />
+    </HydrationBoundary>
   );
 }

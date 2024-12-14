@@ -8,9 +8,15 @@ export default withTV({
     extend: {
       colors: {
         white: "#fff",
+        white15: "rgba(255,255,255,0.15)",
+        white30: "rgba(255,255,255,0.3)",
         primary: "#3C3731",
+        primaryInvert: "#FBF8F2",
         secondary: "#47423D",
-        placeholder: "rgba(255,255,255,0.3)",
+        tab: "#39352F",
+        tabInvert: "#F3EDE4",
+        tertiary: "#34312E",
+        overlay: "rgba(0,0,0,0.6)",
       },
       fontFamily: {
         pretendard: ["var(--font-pretendard)"],
@@ -22,5 +28,13 @@ export default withTV({
       },
     },
   },
+  safelist: [
+    {
+      pattern: /bg-(tab|tabInvert)_bg/,
+    },
+    {
+      pattern: /text-(tab|tabInvert)_text/,
+    },
+  ],
   plugins: [require("tailwindcss-animate")],
 } satisfies Config);

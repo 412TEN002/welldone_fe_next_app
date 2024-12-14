@@ -24,12 +24,15 @@ interface CommandInputProps extends React.ComponentPropsWithoutRef<typeof Comman
 
 const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Input>, CommandInputProps>(
   ({ className, onReset, ...props }, ref) => (
-    <div className="bg-secondary b flex items-center gap-2 px-3" cmdk-input-wrapper="">
+    <div
+      className="bg-secondary relative flex h-[40px] items-center gap-2 rounded-[10px] px-3"
+      cmdk-input-wrapper=""
+    >
       <Search />
       <CommandPrimitive.Input
         ref={ref}
         className={cn(
-          "placeholder:text-placeholder flex h-11 w-full rounded-[10px] bg-transparent py-3 text-sm text-white outline-none disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
+          "placeholder:text-white30 flex w-full bg-transparent py-3 text-sm text-white outline-none disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
           className,
         )}
         {...props}
@@ -47,7 +50,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+    className={cn("max-h-[270px] overflow-y-auto overflow-x-hidden rounded-[10px]", className)}
     {...props}
   />
 ));
@@ -57,7 +60,7 @@ CommandList.displayName = CommandPrimitive.List.displayName;
 const CommandEmpty = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Empty>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
->((props, ref) => <CommandPrimitive.Empty ref={ref} className="py-6 text-center text-sm" {...props} />);
+>((props, ref) => <CommandPrimitive.Empty ref={ref} className="text-center text-sm" {...props} />);
 
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName;
 
