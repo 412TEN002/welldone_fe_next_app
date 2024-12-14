@@ -7,6 +7,7 @@ export interface IntegrationType {
   color_theme: "black" | "white";
   home_icon_url: string;
   icon_url: string;
+  nutrition_tags: { id: number; name: string; description: string }[];
 }
 
 export const integrationOption = queryOptions({
@@ -31,5 +32,15 @@ export const integrationSearchOption = (keyword: string) =>
       } catch (_) {
         return [];
       }
+    },
+  });
+
+export const integrationDetailOption = (id: number) =>
+  queryOptions({
+    queryKey: ["integration", id],
+    queryFn: async () => {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ingredients/${id}`);
+      const data: IntegrationType = await response.json();
+      return data;
     },
   });
