@@ -70,5 +70,5 @@ export function HomeAnimation({ item }: AnimationProps) {
     };
   }, [item]);
 
-  return <div className="h-full w-full overflow-auto" ref={sceneRef}></div>;
+  return <div className="h-full w-full overflow-auto" ref={sceneRef} />;
 }
