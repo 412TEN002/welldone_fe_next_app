@@ -18,7 +18,7 @@ const Command = React.forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-interface CommandInputProps extends React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input> {
+interface CommandInputProps extends React.ComponentPropsWithoutRef<"input"> {
   onReset?: VoidFunction;
 }
 
@@ -29,7 +29,7 @@ const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.I
       cmdk-input-wrapper=""
     >
       <Search />
-      <CommandPrimitive.Input
+      <input
         ref={ref}
         className={cn(
           "flex w-full bg-transparent py-3 text-sm text-white outline-none placeholder:text-white30 disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
@@ -37,7 +37,9 @@ const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.I
         )}
         {...props}
       />
-      {props.value?.length && props.value.length > 0 ? <CircleClose onClick={onReset} /> : null}
+      {props.value?.toString()?.length && props.value.toString().length > 0 ? (
+        <CircleClose onClick={onReset} />
+      ) : null}
     </div>
   ),
 );

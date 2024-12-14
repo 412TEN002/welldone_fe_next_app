@@ -2,22 +2,24 @@
 
 import { useState } from "react";
 import { useDebounce } from "react-use";
+import { integrationSearchOption } from "@/app/_query-options/integration";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const HomeCombobox = () => {
   const [value, setValue] = useState("");
   const [debounceValue, setDebounceValue] = useState(value);
   useDebounce(() => setDebounceValue(value), 20, [value]);
-  console.log(value);
+  const { data } = useSuspenseQuery(integrationSearchOption(debounceValue));
+  console.log(data);
   return (
     <Command className="gap-2">
       <CommandInput
         value={value}
-        onValueChange={(s) => setValue(s)}
+        onChange={({ target: { value } }) => setValue(value)}
         onReset={() => setValue("")}
         placeholder="조리할 채소를 검색해보세요"
       />
-
       <CommandList className="bg-tertiary">
         {value.length > 0 ? (
           <CommandEmpty className="text-white15">
@@ -28,13 +30,7 @@ export const HomeCombobox = () => {
             </div>
           </CommandEmpty>
         ) : null}
-        {value.length > 0 ? (
-          <>
-            <CommandItem>Profile</CommandItem>
-            <CommandItem>Billing</CommandItem>
-            <CommandItem>Settings</CommandItem>
-          </>
-        ) : null}
+        {Array.isArray(data) ? data.map(({ id, name }) => <CommandItem key={id}>{name}</CommandItem>) : null}
       </CommandList>
     </Command>
   );

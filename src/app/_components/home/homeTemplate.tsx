@@ -1,14 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { integrationOption } from "@/app/_query-options/integration";
 import FilterIcon from "@/assets/icon/filter.svg";
 import * as Dialog from "@radix-ui/react-dialog";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { HomeAnimation } from "./animation";
+import { HomeCombobox } from "./combobox";
 import { HomeFilter } from "./filter";
-import { HomeCombobox } from "./input";
 
 export default function HomeTemplate() {
-  // const { data } = useSuspenseQuery(integrationOption);
+  const { data } = useSuspenseQuery(integrationOption);
   const [filterId, setFilterId] = useState<null | number>(null);
 
   return (
