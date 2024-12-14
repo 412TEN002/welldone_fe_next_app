@@ -8,7 +8,7 @@ export const HomeCombobox = () => {
   const [value, setValue] = useState("");
   const [debounceValue, setDebounceValue] = useState(value);
   useDebounce(() => setDebounceValue(value), 20, [value]);
-
+  console.log(value);
   return (
     <Command className="gap-2">
       <CommandInput
@@ -17,8 +17,9 @@ export const HomeCombobox = () => {
         onReset={() => setValue("")}
         placeholder="조리할 채소를 검색해보세요"
       />
-      {value.length > 0 && (
-        <CommandList className="bg-tertiary">
+
+      <CommandList className="bg-tertiary">
+        {value.length > 0 ? (
           <CommandEmpty className="text-white15">
             <div className="px-4 py-[14px]">검색 결과가 없어요</div>
             <div className="h-[1px] w-full bg-white15" />
@@ -26,11 +27,15 @@ export const HomeCombobox = () => {
               <button className="rounded-[28px] border-[1px] border-white15 px-[14px] py-2">{`'${value}' 추가 요청하기`}</button>
             </div>
           </CommandEmpty>
-          <CommandItem>Profile</CommandItem>
-          <CommandItem>Billing</CommandItem>
-          <CommandItem>Settings</CommandItem>
-        </CommandList>
-      )}
+        ) : null}
+        {value.length > 0 ? (
+          <>
+            <CommandItem>Profile</CommandItem>
+            <CommandItem>Billing</CommandItem>
+            <CommandItem>Settings</CommandItem>
+          </>
+        ) : null}
+      </CommandList>
     </Command>
   );
 };

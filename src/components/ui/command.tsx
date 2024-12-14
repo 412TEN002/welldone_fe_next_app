@@ -25,14 +25,14 @@ interface CommandInputProps extends React.ComponentPropsWithoutRef<typeof Comman
 const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Input>, CommandInputProps>(
   ({ className, onReset, ...props }, ref) => (
     <div
-      className="bg-secondary relative flex h-[40px] items-center gap-2 rounded-[10px] px-3"
+      className="relative flex h-[40px] items-center gap-2 rounded-[10px] bg-secondary px-3"
       cmdk-input-wrapper=""
     >
       <Search />
       <CommandPrimitive.Input
         ref={ref}
         className={cn(
-          "placeholder:text-white30 flex w-full bg-transparent py-3 text-sm text-white outline-none disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
+          "flex w-full bg-transparent py-3 text-sm text-white outline-none placeholder:text-white30 disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
           className,
         )}
         {...props}
@@ -98,10 +98,7 @@ const CommandItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Item
     ref={ref}
-    className={cn(
-      "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-neutral-100 data-[selected=true]:text-neutral-900 data-[disabled=true]:opacity-50 dark:data-[selected='true']:bg-neutral-800 dark:data-[selected=true]:text-neutral-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-      className,
-    )}
+    className={cn("px-4 py-[14px] text-secondaryInvert", className)}
     {...props}
   />
 ));

@@ -13,6 +13,7 @@ export default withTV({
         primary: "#3C3731",
         primaryInvert: "#FBF8F2",
         secondary: "#47423D",
+        secondaryInvert: "#C0BCB6",
         tab: "#39352F",
         tabInvert: "#F3EDE4",
         tertiary: "#34312E",

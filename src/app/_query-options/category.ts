@@ -16,15 +16,15 @@ export const categoryOption = queryOptions({
   },
 });
 
-export interface IntegrationType extends Omit<CategoryType,'description'>{
-    category: CategoryType;
+export interface IntegrationType extends Omit<CategoryType, "description"> {
+  category: CategoryType;
 }
 
 export const integrationOption = queryOptions({
-    queryKey: ['integration'],
-    queryFn: async () => {
-       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ingredients/`);
-        const data: IntegrationType[] = await response.json();
-        return data;
-    }
-})
+  queryKey: ["integration"],
+  queryFn: async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ingredients/`);
+    const data: IntegrationType[] = await response.json();
+    return data;
+  },
+});

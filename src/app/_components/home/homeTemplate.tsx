@@ -20,7 +20,7 @@ export default function HomeTemplate() {
             <FilterIcon />
           </Dialog.Trigger>
         </div>
-        <HomeAnimation />s
+        <HomeAnimation />
       </div>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-overlay" />
