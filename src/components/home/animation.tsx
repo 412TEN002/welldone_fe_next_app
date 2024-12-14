@@ -1,13 +1,36 @@
 "use client";
 
 import Matter from "matter-js";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export const HomeAnimation = () => {
+export function HomeAnimation() {
   const sceneRef = useRef<HTMLDivElement>(null);
 
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const [{ height, width }, setDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, [width, height]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (!sceneRef.current) return;
@@ -85,4 +108,4 @@ export const HomeAnimation = () => {
   }, [width, height]);
 
   return <div className="w-100 h-100" ref={sceneRef} />;
-};
+}

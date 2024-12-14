@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import { CategoryType } from "./category";
 
 export interface IntegrationType extends Omit<CategoryType, "description"> {
-  category: CategoryType;
+  category_id: number;
 }
 
 export const integrationOption = queryOptions({
