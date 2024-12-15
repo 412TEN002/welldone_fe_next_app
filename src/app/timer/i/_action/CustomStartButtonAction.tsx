@@ -3,10 +3,11 @@
 import Pause from "@/app/icons/timer/pause.svg";
 import Play from "@/app/icons/timer/play.svg";
 import CustomStartButton from "@/app/timer/i/_component/CustomStartButton";
-import { useTimer } from "@/state/useTranslate";
+import { useSelect, useTimer } from "@/state/useTranslate";
 
 export default function CustomStartButtonAction() {
-  const { status, setStatus } = useTimer();
+  const { time } = useSelect();
+  const { status, setStatus, time: currTime } = useTimer();
 
   const onClickStart = () => {
     if (status === "play") {
@@ -17,6 +18,8 @@ export default function CustomStartButtonAction() {
   };
 
   return (
-    <CustomStartButton onClick={onClickStart}>{status === "play" ? <Pause /> : <Play />}</CustomStartButton>
+    <CustomStartButton isLong={!(currTime !== 0 && currTime !== time)} onClick={onClickStart}>
+      {status === "play" ? <Pause /> : <Play />}
+    </CustomStartButton>
   );
 }

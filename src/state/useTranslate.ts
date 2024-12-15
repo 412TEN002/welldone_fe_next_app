@@ -42,7 +42,7 @@ type SelectAction = {
 export const useSelect = create<SelectState & SelectAction>((set) => ({
   name: "",
   icon: "",
-  time: 1,
+  time: 10,
   tip: {
     w: "",
     p: "",
