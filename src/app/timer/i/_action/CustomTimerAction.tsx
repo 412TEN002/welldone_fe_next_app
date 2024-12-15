@@ -24,6 +24,9 @@ export default function CustomTimerAction() {
       setStatus("pause");
       setCurrTime(time);
       router.push("/timer/i/end");
+
+      const audio = new Audio("/com.mp3");
+      audio.play();
     }
   };
 

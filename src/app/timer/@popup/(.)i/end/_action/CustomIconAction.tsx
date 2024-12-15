@@ -1,6 +1,6 @@
 "use client";
 
-import Sample from "@/app/icons/sample/sample1.svg";
+import Image from "next/image";
 import { useSelect } from "@/state/useTranslate";
 import * as styles from "./customIconAction.css";
 
@@ -9,7 +9,7 @@ export default function CustomIconAction() {
 
   return (
     <div className={styles.layer()}>
-      <Sample />
+      <Image src={icon} alt="item" width={100} height={100} unoptimized />
     </div>
   );
 }
