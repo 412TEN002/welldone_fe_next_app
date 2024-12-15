@@ -14,9 +14,24 @@ export function HomeTemplate() {
   const { data } = useSuspenseQuery(integrationOption);
   const [filterId, setFilterId] = useState<null | number>(null);
 
+  const uploadImage = useMemo(
+    () =>
+      data.map(({ home_icon_url, ...rest }) => {
+        console.log("rest");
+        const img = new Image();
+        img.src = home_icon_url;
+        return {
+          img,
+          ...rest,
+          home_icon_url,
+        };
+      }),
+    [data],
+  );
+
   const filteringData = useMemo(
-    () => (isNil(filterId) ? data : data.filter(({ category_id }) => category_id === filterId)),
-    [filterId],
+    () => (isNil(filterId) ? uploadImage : uploadImage.filter(({ category_id }) => category_id === filterId)),
+    [uploadImage],
   );
 
   return (
