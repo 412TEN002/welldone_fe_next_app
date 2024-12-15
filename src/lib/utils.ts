@@ -35,12 +35,12 @@ export async function asyncRenderMatter({
     // 랜덤 위치 계산
     const x = Common.random(0, width);
     const y = Common.random(0, height);
-    const svgBody = Bodies.rectangle(x, y, img.width, img.height, {
+    const svgBody = Bodies.rectangle(x, y, img.width * 0.7, img.height * 0.7, {
       render: {
         sprite: {
           texture: img.src,
-          xScale: 1,
-          yScale: 1,
+          xScale: 0.7,
+          yScale: 0.7,
         },
       },
       chamfer: {

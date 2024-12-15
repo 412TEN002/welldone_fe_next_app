@@ -22,7 +22,7 @@ export function HomeTemplate() {
   return (
     <Dialog.Root>
       <div className="h-full w-full bg-primary">
-        <div className="absolute flex h-full w-full gap-2 p-5">
+        <div className="absolute flex w-full gap-2 p-5">
           <HomeCombobox />
           <HydrationBoundary>
             <Dialog.Trigger className="h-[40px] rounded-[10px] bg-secondary p-2">
@@ -31,6 +31,7 @@ export function HomeTemplate() {
           </HydrationBoundary>
         </div>
         <HomeAnimation item={filteringData} />
+        {/* <HomeFixedImage item={filteringData} /> */}
       </div>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-overlay" />

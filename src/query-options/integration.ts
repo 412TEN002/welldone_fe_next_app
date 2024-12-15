@@ -23,6 +23,7 @@ export const integrationSearchOption = (keyword: string) =>
   queryOptions({
     queryKey: ["integration", keyword],
     queryFn: async () => {
+      if (keyword.length === 0) return [];
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/ingredients/search?keyword=${keyword}&limit=3`,
