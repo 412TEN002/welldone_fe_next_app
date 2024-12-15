@@ -9,7 +9,7 @@ import CustomResultButton from "@/components/detail/CustomResultButton";
 import { cookingToolOptions } from "@/query-options/cooking-tool";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-const buttonBase = tv({
+export const buttonBase = tv({
   base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow", "rounded-lg"],
 });
 
