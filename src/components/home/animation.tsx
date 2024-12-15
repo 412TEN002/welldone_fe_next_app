@@ -43,12 +43,12 @@ export function HomeAnimation({ item }: AnimationProps) {
       // 랜덤 위치 계산
       const x = Common.random(0, width);
       const y = Common.random(0, height);
-      const svgBody = Bodies.rectangle(x, y, img.width * 0.7, img.height * 0.7, {
+      const svgBody = Bodies.rectangle(x, y, img.width * 0.8, img.height * 0.8, {
         render: {
           sprite: {
             texture: img.src,
-            xScale: 0.7,
-            yScale: 0.7,
+            xScale: 0.8,
+            yScale: 0.8,
           },
         },
         chamfer: {

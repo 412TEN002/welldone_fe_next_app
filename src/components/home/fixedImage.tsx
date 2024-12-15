@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { IntegrationType } from "@/query-options/integration";
 
 interface FixedImageProps {
@@ -6,10 +7,14 @@ interface FixedImageProps {
 
 export function HomeFixedImage({ item }: FixedImageProps) {
   return (
-    <div className="mt-20">
+    <div className="absolute top-16 flex flex-wrap bg-primary">
       {item.map(({ id, home_icon_url }) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img alt={""} src={home_icon_url} key={id} />
+        <Link key={id} href={`/d/${id}`}>
+          {
+            // eslint-disable-next-line @next/next/no-img-element
+            <img alt={""} src={home_icon_url} />
+          }
+        </Link>
       ))}
     </div>
   );
