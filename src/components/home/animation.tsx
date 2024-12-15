@@ -2,11 +2,10 @@
 
 import Matter from "matter-js";
 import { useEffect, useState } from "react";
-import { asyncRenderMatter } from "@/lib/utils";
 import { IntegrationType } from "@/query-options/integration";
 
 interface AnimationProps {
-  item: IntegrationType[];
+  item: (IntegrationType & { img: HTMLImageElement })[];
 }
 
 export function HomeAnimation({ item }: AnimationProps) {
@@ -15,7 +14,7 @@ export function HomeAnimation({ item }: AnimationProps) {
   useEffect(() => {
     if (!sceneRef) return;
 
-    const { Engine, Render, Runner, Composite, Bodies } = Matter;
+    const { Engine, Render, Runner, Composite, Bodies, Common, Mouse, MouseConstraint, Events } = Matter;
     const width = window.innerWidth;
     const height = window.innerHeight;
     // 1. 엔진과 월드 생성
@@ -40,8 +39,27 @@ export function HomeAnimation({ item }: AnimationProps) {
     // 3. 러너 생성 및 실행
     const runner = Runner.create();
     Runner.run(runner, engine);
-    asyncRenderMatter({ item, Matter, render, engine, world });
+    item.map(({ img, id }) => {
+      // 랜덤 위치 계산
+      const x = Common.random(0, width);
+      const y = Common.random(0, height);
+      const svgBody = Bodies.rectangle(x, y, img.width * 0.8, img.height * 0.8, {
+        render: {
+          sprite: {
+            texture: img.src,
+            xScale: 0.8,
+            yScale: 0.8,
+          },
+        },
+        chamfer: {
+          quality: 100,
+        },
+      });
 
+      // 사용자 정의 ID 추가
+      svgBody.customId = id;
+      Composite.add(world, svgBody);
+    });
     const rectangleOptions = {
       isStatic: true,
       render: { visible: false },
@@ -55,6 +73,38 @@ export function HomeAnimation({ item }: AnimationProps) {
       Bodies.rectangle(0, height / 2, 10, height, rectangleOptions), // 왼쪽
     ]);
 
+    const mouse = Mouse.create(render.canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+      mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: {
+          visible: false,
+        },
+      },
+    });
+    Composite.add(world, mouseConstraint);
+    render.mouse = mouse;
+
+    // 물체 클릭 이벤트
+    Events.on(mouseConstraint, "mousedown", (event: any) => {
+      const { mouse } = event;
+      const bodies = Composite.allBodies(world);
+
+      bodies.forEach((body: any) => {
+        // 마우스가 물체의 경계를 포함하는지 체크
+        if (Matter.Bounds.contains(body.bounds, mouse.position)) {
+          console.log(`Clicked on body with ID: ${body.id}, Custom ID: ${body.customId}`);
+
+          // 페이지 이동 (예: Custom ID에 따라 페이지 이동)
+          const targetId = body.customId;
+          if (targetId !== undefined) {
+            // 예시: id에 따라 페이지 이동
+            window.location.href = `/d/${targetId}`;
+          }
+        }
+      });
+    });
     // 7. 렌더링 영역 조정
     Render.lookAt(render, {
       min: { x: 0, y: 0 },
