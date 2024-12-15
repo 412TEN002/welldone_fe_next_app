@@ -23,7 +23,7 @@ export function DetailTemplate({ id }: DetailTemplateProps) {
           <p key={id}>#{name}</p>
         ))}
       </div>
-      <CookingToolSelect />
+      <CookingToolSelect id={data.id} name={data.name} icon={data.icon_url} />
     </div>
   );
 }
