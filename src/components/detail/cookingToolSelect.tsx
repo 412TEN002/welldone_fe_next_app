@@ -2,21 +2,28 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { tv } from "tailwind-variants";
+import CustomResultButton from "@/components/detail/CustomResultButton";
 import { cookingToolOptions } from "@/query-options/cooking-tool";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-const buttonBase = tv({
+export const buttonBase = tv({
   base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow"],
 });
 
-export function CookingToolSelect() {
+type Props = {
+  id: number;
+  name: string;
+  icon: string;
+};
+
+export function CookingToolSelect(props: Props) {
   const { data } = useSuspenseQuery(cookingToolOptions);
   const [state, setState] = useState(() => data[0].id);
 
-  const { push, back } = useRouter();
+  const { back } = useRouter();
 
   return (
     <div className="fixed bottom-0 flex w-full flex-col items-center rounded-t-2xl bg-primaryInvert px-[18px]">
@@ -46,9 +53,7 @@ export function CookingToolSelect() {
         <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={back}>
           취소
         </button>
-        <button className={buttonBase({ class: "bg-primary" })} onClick={() => push(`/timer/i/${state}`)}>
-          완료
-        </button>
+        <CustomResultButton makeId={state} {...props} />
       </div>
     </div>
   );
