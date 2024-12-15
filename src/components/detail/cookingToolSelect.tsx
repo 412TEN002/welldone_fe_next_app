@@ -2,14 +2,14 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { tv } from "tailwind-variants";
 import { cookingToolOptions } from "@/query-options/cooking-tool";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 const buttonBase = tv({
-  base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow"],
+  base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow", "rounded-lg"],
 });
 
 export function CookingToolSelect() {
@@ -42,7 +42,7 @@ export function CookingToolSelect() {
           </button>
         ))}
       </div>
-      <div className={"flex gap-3"}>
+      <div className={"mb-[30px] flex w-full gap-3"}>
         <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={back}>
           취소
         </button>
