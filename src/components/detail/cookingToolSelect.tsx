@@ -9,8 +9,8 @@ import CustomResultButton from "@/components/detail/CustomResultButton";
 import { cookingToolOptions } from "@/query-options/cooking-tool";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-export const buttonBase = tv({
-  base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow"],
+const buttonBase = tv({
+  base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow", "rounded-lg"],
 });
 
 type Props = {
@@ -49,7 +49,7 @@ export function CookingToolSelect(props: Props) {
           </button>
         ))}
       </div>
-      <div className={"flex gap-3"}>
+      <div className={"mb-[30px] flex w-full gap-3"}>
         <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={back}>
           취소
         </button>
