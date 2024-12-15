@@ -24,15 +24,12 @@ interface CommandInputProps extends React.ComponentPropsWithoutRef<"input"> {
 
 const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Input>, CommandInputProps>(
   ({ className, onReset, ...props }, ref) => (
-    <div
-      className="relative flex h-[40px] items-center gap-2 rounded-[10px] bg-secondary px-3"
-      cmdk-input-wrapper=""
-    >
+    <div className="flex h-[40px] items-center gap-2 rounded-[10px] bg-secondary px-3" cmdk-input-wrapper="">
       <Search />
       <input
         ref={ref}
         className={cn(
-          "flex w-full bg-transparent py-3 text-sm text-white outline-none placeholder:text-white30 disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
+          "flex flex-1 bg-transparent py-3 text-sm text-white outline-none placeholder:text-white30 disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
           className,
         )}
         {...props}
