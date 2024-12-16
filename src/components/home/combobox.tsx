@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BaseSyntheticEvent, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useDebounce } from "react-use";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { useOutsideRef } from "@/hooks/useOutsideRef";
 import { integrationSearchOption } from "@/query-options/integration";
-import * as Dialog from "@radix-ui/react-dialog";
 import { useQuery } from "@tanstack/react-query";
 
 export const HomeCombobox = () => {
@@ -15,21 +15,7 @@ export const HomeCombobox = () => {
   useDebounce(() => setDebounceValue(value), 20, [value]);
 
   const { data } = useQuery(integrationSearchOption(debounceValue));
-  const [open, setOpen] = useState(false);
-
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClick = (event: BaseSyntheticEvent | MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClick);
-    return () => {
-      document.removeEventListener("click", handleClick);
-    };
-  }, [open, ref]);
+  const { ref, setOpen, open } = useOutsideRef<HTMLDivElement>();
 
   return (
     <Command ref={ref} className="gap-2">
@@ -46,7 +32,7 @@ export const HomeCombobox = () => {
         <CommandList className="bg-tertiary">
           {value.length > 0 ? (
             <CommandEmpty className="text-white15">
-              <Dialog.Title className="px-4 py-[14px]">검색 결과가 없어요</Dialog.Title>
+              <span className="px-4 py-[14px]">검색 결과가 없어요</span>
               <div className="h-[1px] w-full bg-white15" />
               <div className="flex items-center justify-center px-4 py-[14px]">
                 <button className="rounded-[28px] border-[1px] border-white15 px-[14px] py-2">{`'${value}' 추가 요청하기`}</button>
