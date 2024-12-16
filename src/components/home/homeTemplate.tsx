@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import FilterIcon from "@/assets/icon/filter.svg";
 import { integrationOption } from "@/query-options/integration";
 import * as Dialog from "@radix-ui/react-dialog";
-import { HydrationBoundary, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { HomeCombobox } from "./combobox";
 import { HomeFilter } from "./filter";
 import { HomeFixedImage } from "./fixedImage";
@@ -39,11 +39,9 @@ export function HomeTemplate() {
       <div className="h-full w-full bg-primary">
         <div className="absolute z-10 flex w-full gap-2 p-5">
           <HomeCombobox />
-          <HydrationBoundary>
-            <Dialog.Trigger className="h-[40px] rounded-[10px] bg-secondary p-2">
-              <FilterIcon />
-            </Dialog.Trigger>
-          </HydrationBoundary>
+          <Dialog.Trigger className="h-[40px] rounded-[10px] bg-secondary p-2">
+            <FilterIcon />
+          </Dialog.Trigger>
         </div>
         {/* <HomeAnimation item={filteringData} /> */}
         <HomeFixedImage item={filteringData} />
