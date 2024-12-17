@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { IntegrationType } from "@/query-options/integration";
 
 interface AnimationProps {
-  item: (IntegrationType & { img: HTMLImageElement })[];
+  item: (IntegrationType & { img?: HTMLImageElement })[];
 }
 
 export function HomeAnimation({ item }: AnimationProps) {
@@ -39,20 +39,17 @@ export function HomeAnimation({ item }: AnimationProps) {
     // 3. 러너 생성 및 실행
     const runner = Runner.create();
     Runner.run(runner, engine);
-    item.map(({ img, id }) => {
+    item.map(({ home_icon_url, id }) => {
       // 랜덤 위치 계산
       const x = Common.random(0, width);
       const y = Common.random(0, height);
-      const svgBody = Bodies.rectangle(x, y, img.width * 0.8, img.height * 0.8, {
+      const svgBody = Bodies.rectangle(x, y, 100, 100, {
         render: {
           sprite: {
-            texture: img.src,
-            xScale: 0.8,
-            yScale: 0.8,
+            texture: home_icon_url,
+            xScale: 0.6,
+            yScale: 0.6,
           },
-        },
-        chamfer: {
-          quality: 100,
         },
       });
 
