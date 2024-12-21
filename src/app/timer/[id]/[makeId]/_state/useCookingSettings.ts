@@ -42,7 +42,7 @@ export const useCookingSettings = ({ id, makeId }: Props) => {
     return {
       time: data.cooking_time,
       tips: tips,
-      fire: getFire(data.temperature),
+      fire: getFire(data.temperature) as "l" | "m" | "h",
       theme: data.color_theme as "white" | "black",
     };
   }, [data]);

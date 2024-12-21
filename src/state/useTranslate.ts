@@ -17,17 +17,21 @@ export const useFeedback = create<FeedbackState & FeedbackAction>((set) => ({
 type SelectState = {
   name: string;
   icon: string;
+  eTip: string;
 };
 
 type SelectAction = {
   setSelect: (name: SelectState["name"], icon: SelectState["icon"]) => void;
+  setTip: (eTip: SelectState["eTip"]) => void;
 };
 
 export const useSelect = create<SelectState & SelectAction>((set) => ({
   name: "",
   icon: "",
+  eTip: "",
 
   setSelect: (name, icon) => set(() => ({ name, icon })),
+  setTip: (eTip) => set(() => ({ eTip })),
 }));
 
 type TimerState = {

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { useCookingSettings } from "@/app/timer/[id]/[makeId]/_state/useCookingSettings";
-import { useTimer } from "@/state/useTranslate";
+import { useSelect, useTimer } from "@/state/useTranslate";
 import CustomTimer from "../_component/CustomTimer";
 import CustomTimerAside from "../_component/CustomTimerAside";
 import * as styles from "./customTimerAction.css";
@@ -16,6 +16,7 @@ type Props = {
 export default function CustomTimerAction({ id, makeId }: Props) {
   const { localData } = useCookingSettings({ id, makeId });
 
+  const { setTip } = useSelect();
   const { time: currTime, setTime: setCurrTime, status, setStatus } = useTimer();
   const router = useRouter();
 
@@ -30,6 +31,8 @@ export default function CustomTimerAction({ id, makeId }: Props) {
     if (timeRemaining === 0) {
       setStatus("pause");
       setCurrTime(localData.time);
+      setTip(localData.tips.e);
+
       router.push("/timer/i/end");
 
       const audio = new Audio("/com.mp3");
@@ -52,6 +55,7 @@ export default function CustomTimerAction({ id, makeId }: Props) {
     return () => {
       setCurrTime(0);
       setStatus("pause");
+      setTip("");
     };
   }, [localData.time]);
 
