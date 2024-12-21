@@ -2,13 +2,20 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import CustomTimer from "@/app/timer/i/_component/CustomTimer";
-import CustomTimerAside from "@/app/timer/i/_component/CustomTimerAside";
-import { useSelect, useTimer } from "@/state/useTranslate";
+import { useCookingSettings } from "@/app/timer/[id]/[makeId]/_state/useCookingSettings";
+import { useTimer } from "@/state/useTranslate";
+import CustomTimer from "../_component/CustomTimer";
+import CustomTimerAside from "../_component/CustomTimerAside";
 import * as styles from "./customTimerAction.css";
 
-export default function CustomTimerAction() {
-  const { time } = useSelect();
+type Props = {
+  id: number;
+  makeId: number;
+};
+
+export default function CustomTimerAction({ id, makeId }: Props) {
+  const { localData } = useCookingSettings({ id, makeId });
+
   const { time: currTime, setTime: setCurrTime, status, setStatus } = useTimer();
   const router = useRouter();
 
@@ -22,7 +29,7 @@ export default function CustomTimerAction() {
 
     if (timeRemaining === 0) {
       setStatus("pause");
-      setCurrTime(time);
+      setCurrTime(localData.time);
       router.push("/timer/i/end");
 
       const audio = new Audio("/com.mp3");
@@ -40,15 +47,18 @@ export default function CustomTimerAction() {
   }, [status]);
 
   useEffect(() => {
-    setCurrTime(time);
+    setCurrTime(localData.time);
 
-    return () => setCurrTime(0);
-  }, [time]);
+    return () => {
+      setCurrTime(0);
+      setStatus("pause");
+    };
+  }, [localData.time]);
 
   return (
     <div className={styles.layer()}>
-      <CustomTimer time={currTime} />
-      {status === "pause" && currTime !== 0 && currTime !== time && <CustomTimerAside />}
+      <CustomTimer time={currTime} theme={localData.theme} />
+      {status === "pause" && currTime !== 0 && currTime !== localData.time && <CustomTimerAside />}
     </div>
   );
 }

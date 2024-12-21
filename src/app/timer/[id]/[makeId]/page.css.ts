@@ -2,6 +2,12 @@ import { tv } from "tailwind-variants";
 
 export const section = tv({
   base: ["flex", "flex-col", "items-center", "h-full"],
+  variants: {
+    bg: {
+      white: "bg-[#3C3731]",
+      black: "bg-[#FBF8F2]",
+    },
+  },
 });
 
 export const hgroup = tv({

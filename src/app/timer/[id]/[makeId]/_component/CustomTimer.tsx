@@ -2,9 +2,10 @@ import * as styles from "./customTimer.css";
 
 type Props = {
   time: number;
+  theme: "white" | "black";
 };
 
-export default function CustomTimer({ time }: Props) {
+export default function CustomTimer({ time, theme }: Props) {
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -14,5 +15,5 @@ export default function CustomTimer({ time }: Props) {
     return `${formattedMinutes}:${formattedSeconds}`;
   };
 
-  return <p className={styles.timer()}>{formatTime(time)}</p>;
+  return <p className={styles.timer({ color: theme })}>{formatTime(time)}</p>;
 }

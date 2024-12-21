@@ -39,14 +39,18 @@ export function TipAccordion({ trimTip, cookingTip, className }: TipAccordionPro
         <Accordion.Content>
           <div className="h-[1px] w-full bg-toolSelect px-4" />
           <div className="flex flex-col gap-5 p-5 pt-[14px]">
-            <div className={wrap()}>
-              <div className={label()}>손질 팁</div>
-              <li>{trimTip}</li>
-            </div>
-            <div className={wrap()}>
-              <div className={label()}>조리 팁</div>
-              <li>{cookingTip}</li>
-            </div>
+            {trimTip && (
+              <div className={wrap()}>
+                <div className={label()}>손질 팁</div>
+                <li>{trimTip}</li>
+              </div>
+            )}
+            {cookingTip && (
+              <div className={wrap()}>
+                <div className={label()}>조리 팁</div>
+                <li>{cookingTip}</li>
+              </div>
+            )}
           </div>
         </Accordion.Content>
       </Accordion.AccordionItem>

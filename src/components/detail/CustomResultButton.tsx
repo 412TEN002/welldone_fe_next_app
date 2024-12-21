@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { getMake, useCookingSettings } from "@/components/detail/_state/useCookingSettings";
 import { buttonBase } from "@/components/detail/cookingToolSelect";
 import { useSelect } from "@/state/useTranslate";
 
@@ -16,12 +15,10 @@ export default function CustomResultButton({ id, makeId, name, icon }: Props) {
   const router = useRouter();
   const { setSelect } = useSelect();
 
-  const { localData } = useCookingSettings({ id: id, makeId: makeId });
-
   const onResult = () => {
-    setSelect(name, icon, localData.time, localData.tips, getMake(makeId), localData.fire as "l" | "m" | "h");
+    setSelect(name, icon);
 
-    router.push("/timer/i");
+    router.push(`/timer/${id}/${makeId}`);
   };
 
   return (

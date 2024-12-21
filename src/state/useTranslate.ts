@@ -17,42 +17,17 @@ export const useFeedback = create<FeedbackState & FeedbackAction>((set) => ({
 type SelectState = {
   name: string;
   icon: string;
-
-  time: number;
-  tip: {
-    w: string;
-    p: string;
-    e: string;
-  };
-  make: "oven" | "pot" | "steamy";
-  fire: "h" | "m" | "l";
 };
 
 type SelectAction = {
-  setSelect: (
-    name: SelectState["name"],
-    icon: SelectState["icon"],
-    time: SelectState["time"],
-    tip: SelectState["tip"],
-    make: SelectState["make"],
-    fire: SelectState["fire"],
-  ) => void;
+  setSelect: (name: SelectState["name"], icon: SelectState["icon"]) => void;
 };
 
 export const useSelect = create<SelectState & SelectAction>((set) => ({
   name: "",
   icon: "",
-  time: 10,
-  tip: {
-    w: "",
-    p: "",
-    e: "",
-  },
-  make: "pot",
-  fire: "h",
 
-  setSelect: (name, icon, time, tip, make, fire) =>
-    set(() => ({ name: name, icon: icon, time: time, tip: tip, make: make, fire: fire })),
+  setSelect: (name, icon) => set(() => ({ name, icon })),
 }));
 
 type TimerState = {

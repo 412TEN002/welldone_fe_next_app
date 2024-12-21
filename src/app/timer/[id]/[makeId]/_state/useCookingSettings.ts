@@ -1,24 +1,10 @@
 import { useMemo } from "react";
-import { getCookingSettings } from "@/components/detail/_lib/getCookingSettings";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { getCookingSettings } from "../_lib/getCookingSettings";
 
 type Props = {
   id: number;
   makeId: number;
-};
-
-export const getMake = (id: number) => {
-  if (id === 1) return "pot";
-  if (id === 2) return "oven";
-
-  return "steamy";
-};
-
-export const getMakeId = (key: string) => {
-  if (key === "pot") return 1;
-  if (key === "oven") return 2;
-
-  return 3;
 };
 
 export const getFire = (fire: number) => {
@@ -28,24 +14,18 @@ export const getFire = (fire: number) => {
   return "h";
 };
 
-export const useCookingSettings = ({ id, makeId }: Props) => {
-  const { data } = useQuery({
+export const cookingSettingsOptions = (id: number, makeId: number) =>
+  queryOptions({
     queryKey: ["settings", id, makeId],
     queryFn: getCookingSettings,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 10 * 2,
   });
 
-  const localData = useMemo(() => {
-    if (!data)
-      return {
-        time: 0,
-        tips: {
-          w: "",
-          p: "",
-          e: "",
-        },
-        fire: "h",
-      };
+export const useCookingSettings = ({ id, makeId }: Props) => {
+  const { data } = useSuspenseQuery(cookingSettingsOptions(id, makeId));
 
+  const localData = useMemo(() => {
     let tips = {
       w: "",
       p: "",
@@ -63,9 +43,9 @@ export const useCookingSettings = ({ id, makeId }: Props) => {
       time: data.cooking_time,
       tips: tips,
       fire: getFire(data.temperature),
+      theme: data.color_theme as "white" | "black",
     };
   }, [data]);
-  console.log(data);
 
   return { localData };
 };

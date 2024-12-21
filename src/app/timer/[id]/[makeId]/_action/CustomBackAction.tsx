@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Back from "@/app/icons/timer/back.svg";
+import Back from "../../../../icons/timer/back.svg";
 import * as styles from "./customBackAction.css";
 
 export default function CustomBackAction() {
