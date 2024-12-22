@@ -17,7 +17,7 @@ export const HomeCombobox = () => {
   const { data } = useQuery(integrationSearchOption(debounceValue));
   const { ref, setOpen, open } = useOutsideRef<HTMLDivElement>();
 
-  const { mutate, isPending, isSuccess, reset } = useIngredientAddMutation(value);
+  const { mutate, isPending, isSuccess, reset } = useIngredientAddMutation();
   return (
     <Command ref={ref} className="gap-2">
       <CommandInput
@@ -39,14 +39,16 @@ export const HomeCombobox = () => {
               <div className="px-4 py-[14px]">검색 결과가 없어요</div>
               <div className="h-[1px] w-full bg-white" />
               <div className="flex items-center justify-center px-4 py-[14px]">
-                {isPending ? <div>...로딩 중</div> : null}
-                {!isPending && !isSuccess ? (
+                {isPending ? (
+                  <div>...로딩 중</div>
+                ) : isSuccess ? (
+                  <div className="text-sm">요청 완료! 조금만 기다려주세요</div>
+                ) : (
                   <button
                     className="rounded-[28px] border-[1px] border-white px-[14px] py-2"
-                    onClick={() => mutate()}
+                    onClick={() => mutate(value)}
                   >{`'${value}' 추가 요청하기`}</button>
-                ) : null}
-                {isSuccess ? <div className="text-sm">요청 완료! 조금만 기다려주세요</div> : null}
+                )}
               </div>
             </CommandEmpty>
           ) : null}
