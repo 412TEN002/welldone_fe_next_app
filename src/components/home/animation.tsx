@@ -5,11 +5,24 @@ import { useEffect, useState } from "react";
 import { IntegrationType } from "@/query-options/integration";
 
 interface AnimationProps {
-  item: (IntegrationType & { img?: HTMLImageElement })[];
+  item: IntegrationType[];
 }
 
 export function HomeAnimation({ item }: AnimationProps) {
   const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
+  const preloadImages = async () => {
+    const promises = item.map(({ home_icon_url, ...rest }) => {
+      return new Promise<IntegrationType & { img: HTMLImageElement }>((resolve) => {
+        const img = new Image();
+        img.src = home_icon_url;
+        img.onload = () => resolve({ ...rest, home_icon_url, img });
+      });
+    });
+    setImagesLoaded(true);
+    return await Promise.all(promises);
+  };
 
   useEffect(() => {
     if (!sceneRef) return;
@@ -17,106 +30,104 @@ export function HomeAnimation({ item }: AnimationProps) {
     const { Engine, Render, Runner, Composite, Bodies, Common, Mouse, MouseConstraint, Events } = Matter;
     const width = window.innerWidth;
     const height = window.innerHeight;
-    // 1. 엔진과 월드 생성
+    // Matter.js 엔진, 렌더, 러너 생성
     const engine = Engine.create();
     const world = engine.world;
-
-    // 2. 렌더링 설정
+    console.log("asdf");
     const render = Render.create({
       element: sceneRef,
       engine,
       options: {
         width,
         height,
-        showAngleIndicator: false,
-        wireframes: false, // 변경: 실제 렌더링 스타일
+        wireframes: false,
         background: "#3C3731",
         pixelRatio: window.devicePixelRatio || 2,
       },
     });
+
     Render.run(render);
-
-    // 3. 러너 생성 및 실행
     const runner = Runner.create();
-    Runner.run(runner, engine);
-    item.map(({ home_icon_url, id }) => {
-      // 랜덤 위치 계산
-      const x = Common.random(0, width);
-      const y = Common.random(0, height);
-      const svgBody = Bodies.rectangle(x, y, 100, 100, {
-        render: {
-          sprite: {
-            texture: home_icon_url,
-            xScale: 0.6,
-            yScale: 0.6,
-          },
-        },
+    const initializeScene = (items: (IntegrationType & { img: HTMLImageElement })[]) => {
+      Runner.run(runner, engine);
+
+      Composite.add(
+        world,
+        items.map(({ img, id }) => {
+          const x = Common.random(0, width);
+          const y = Common.random(0, height);
+          const body = Bodies.rectangle(x, y, img.width * 0.8, img.height * 0.8, {
+            render: {
+              sprite: {
+                texture: img.src,
+                xScale: 0.8,
+                yScale: 0.8,
+              },
+            },
+          });
+
+          body.customId = id;
+          return body;
+        }),
+      );
+
+      const rectangleOptions = { isStatic: true, render: { visible: false } };
+      Composite.add(world, [
+        Bodies.rectangle(width / 2, 0, width, 10, rectangleOptions),
+        Bodies.rectangle(width / 2, height, width, 20, rectangleOptions),
+        Bodies.rectangle(width, height / 2, 10, height, rectangleOptions),
+        Bodies.rectangle(0, height / 2, 10, height, rectangleOptions),
+      ]);
+
+      const mouse = Mouse.create(render.canvas);
+      const mouseConstraint = MouseConstraint.create(engine, {
+        mouse,
+        constraint: { stiffness: 0.2, render: { visible: false } },
       });
+      Composite.add(world, mouseConstraint);
+      render.mouse = mouse;
 
-      // 사용자 정의 ID 추가
-      svgBody.customId = id;
-      Composite.add(world, svgBody);
-    });
-    const rectangleOptions = {
-      isStatic: true,
-      render: { visible: false },
-    };
+      Events.on(mouseConstraint, "mousedown", (event: any) => {
+        const { mouse } = event;
+        const bodies = Composite.allBodies(world);
 
-    // 5. 월드 경계 추가
-    Composite.add(world, [
-      Bodies.rectangle(width / 2, 0, width, 10, rectangleOptions), // 상단
-      Bodies.rectangle(width / 2, height, width, 20, rectangleOptions), // 하단
-      Bodies.rectangle(width, height / 2, 10, height, rectangleOptions), // 오른쪽
-      Bodies.rectangle(0, height / 2, 10, height, rectangleOptions), // 왼쪽
-    ]);
-
-    const mouse = Mouse.create(render.canvas);
-    const mouseConstraint = MouseConstraint.create(engine, {
-      mouse,
-      constraint: {
-        stiffness: 0.2,
-        render: {
-          visible: false,
-        },
-      },
-    });
-    Composite.add(world, mouseConstraint);
-    render.mouse = mouse;
-
-    // 물체 클릭 이벤트
-    Events.on(mouseConstraint, "mousedown", (event: any) => {
-      const { mouse } = event;
-      const bodies = Composite.allBodies(world);
-
-      bodies.forEach((body: any) => {
-        // 마우스가 물체의 경계를 포함하는지 체크
-        if (Matter.Bounds.contains(body.bounds, mouse.position)) {
-          console.log(`Clicked on body with ID: ${body.id}, Custom ID: ${body.customId}`);
-
-          // 페이지 이동 (예: Custom ID에 따라 페이지 이동)
-          const targetId = body.customId;
-          if (targetId !== undefined) {
-            // 예시: id에 따라 페이지 이동
-            window.location.href = `/d/${targetId}`;
+        bodies.forEach((body: any) => {
+          if (Matter.Bounds.contains(body.bounds, mouse.position)) {
+            console.log(`Clicked on body with ID: ${body.id}, Custom ID: ${body.customId}`);
+            if (body.customId) {
+              window.location.href = `/d/${body.customId}`;
+            }
           }
-        }
+        });
       });
-    });
-    // 7. 렌더링 영역 조정
-    Render.lookAt(render, {
-      min: { x: 0, y: 0 },
-      max: { x: width, y: height },
-    });
 
-    // 8. 클린업
-    return () => {
-      Matter.Render.stop(render);
-      Matter.Runner.stop(runner);
-      Matter.Engine.clear(engine);
-      render.canvas.remove();
-      render.textures = {};
+      Render.lookAt(render, { min: { x: 0, y: 0 }, max: { x: width, y: height } });
     };
-  }, [item, sceneRef]);
 
-  return <div className="h-full w-full overflow-auto" ref={setSceneRef}></div>;
+    preloadImages().then((items) => {
+      initializeScene(items);
+    });
+
+    // 클린업
+    return () => {
+      if (render) {
+        Render.stop(render);
+        render.canvas.remove();
+        render.textures = {};
+      }
+      if (runner) {
+        Runner.stop(runner);
+      }
+      if (engine) {
+        Matter.Composite.clear(engine.world, false);
+        Matter.Engine.clear(engine);
+      }
+    };
+  }, [sceneRef, item]);
+
+  return (
+    <div className="flex h-full w-full items-center justify-center overflow-auto" ref={setSceneRef}>
+      {!imagesLoaded ? <p className="animate-pulse text-white">...로딩 중</p> : null}
+    </div>
+  );
 }

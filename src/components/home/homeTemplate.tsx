@@ -10,6 +10,7 @@ import { HomeAnimation } from "./animation";
 import { HomeCombobox } from "./combobox";
 import { HomeFilter } from "./filter";
 
+// const HomeAnimation = dynamic(async () => (await import("./animation")).HomeAnimation, { ssr: false });
 export function HomeTemplate() {
   const { data } = useSuspenseQuery(integrationOption);
   const [filterId, setFilterId] = useState<null | number>(null);
@@ -22,7 +23,7 @@ export function HomeTemplate() {
   return (
     <Dialog.Root>
       <div className="h-full w-full bg-primary">
-        <div className="absolute z-10 flex w-full gap-2 p-5">
+        <div className="absolute flex w-full gap-2 p-5">
           <HomeCombobox />
           <Dialog.Trigger className="h-[40px] rounded-[10px] bg-secondary p-2">
             <FilterIcon />

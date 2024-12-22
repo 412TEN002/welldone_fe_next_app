@@ -1,4 +1,4 @@
-import { queryOptions } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export interface IntegrationType {
   id: number;
@@ -30,7 +30,7 @@ export const integrationSearchOption = (keyword: string) =>
         );
         const data: IntegrationType[] = await response.json();
         return data;
-      } catch (_) {
+      } catch (e) {
         return [];
       }
     },
@@ -45,3 +45,20 @@ export const integrationDetailOption = (id: number) =>
       return data;
     },
   });
+
+export function useIngredientAddMutation(comment: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () =>
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/feedback/ingredient-request-feedback`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // 요청 본문 형식을 지정
+        },
+        body: JSON.stringify({ comment }),
+      }),
+    onSuccess: () => {
+      queryClient.cancelQueries(integrationSearchOption(comment));
+    },
+  });
+}
