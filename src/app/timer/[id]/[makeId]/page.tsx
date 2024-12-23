@@ -1,4 +1,5 @@
 import CustomBackAction from "@/app/timer/[id]/[makeId]/_action/CustomBackAction";
+import CustomFireInfoAction from "@/app/timer/[id]/[makeId]/_action/CustomFireInfoAction";
 import CustomMakeAction from "@/app/timer/[id]/[makeId]/_action/CustomMakeAction";
 import CustomResetButtonAction from "@/app/timer/[id]/[makeId]/_action/CustomResetButtonAction";
 import CustomSectionAction from "@/app/timer/[id]/[makeId]/_action/CustomSectionAction";
@@ -33,7 +34,9 @@ export default async function Page({ params }: Props) {
         <article className={styles.makeLayer()}>
           <CustomMakeAction id={id} makeId={makeId} />
         </article>
-        <article>불 tip</article>
+        <article>
+          <CustomFireInfoAction id={id} makeId={makeId} />
+        </article>
         <div className={styles.buttonLayer()}>
           <CustomStartButtonAction id={id} makeId={makeId} />
           <CustomResetButtonAction id={id} makeId={makeId} />

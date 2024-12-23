@@ -23,6 +23,7 @@
     "next": "15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-tooltip": "^5.28.0",
     "react-use": "^17.6.0",
     "tailwind-merge": "^2.5.5",
     "tailwind-variants": "^0.3.0",
