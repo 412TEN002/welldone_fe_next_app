@@ -1,7 +1,7 @@
 "use client";
 
 import Matter from "matter-js";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IntegrationType } from "@/query-options/integration";
 
 interface AnimationProps {
@@ -12,7 +12,7 @@ export function HomeAnimation({ item }: AnimationProps) {
   const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
-  const preloadImages = async () => {
+  const preloadImages = useCallback(async () => {
     const promises = item.map(({ home_icon_url, ...rest }) => {
       return new Promise<IntegrationType & { img: HTMLImageElement }>((resolve) => {
         const img = new Image();
@@ -22,7 +22,7 @@ export function HomeAnimation({ item }: AnimationProps) {
     });
     setImagesLoaded(true);
     return await Promise.all(promises);
-  };
+  }, [item]);
 
   useEffect(() => {
     if (!sceneRef) return;
@@ -33,7 +33,7 @@ export function HomeAnimation({ item }: AnimationProps) {
     // Matter.js 엔진, 렌더, 러너 생성
     const engine = Engine.create();
     const world = engine.world;
-    console.log("asdf");
+
     const render = Render.create({
       element: sceneRef,
       engine,
@@ -48,20 +48,20 @@ export function HomeAnimation({ item }: AnimationProps) {
 
     Render.run(render);
     const runner = Runner.create();
-    const initializeScene = (items: (IntegrationType & { img: HTMLImageElement })[]) => {
-      Runner.run(runner, engine);
+    Runner.run(runner, engine);
 
+    const initializeScene = (items: (IntegrationType & { img: HTMLImageElement })[]) => {
       Composite.add(
         world,
         items.map(({ img, id }) => {
           const x = Common.random(0, width);
           const y = Common.random(0, height);
-          const body = Bodies.rectangle(x, y, img.width * 0.8, img.height * 0.8, {
+          const body = Bodies.rectangle(x, y, img.width * 0.7, img.height * 0.7, {
             render: {
               sprite: {
                 texture: img.src,
-                xScale: 0.8,
-                yScale: 0.8,
+                xScale: 0.7,
+                yScale: 0.7,
               },
             },
           });
@@ -93,7 +93,6 @@ export function HomeAnimation({ item }: AnimationProps) {
 
         bodies.forEach((body: any) => {
           if (Matter.Bounds.contains(body.bounds, mouse.position)) {
-            console.log(`Clicked on body with ID: ${body.id}, Custom ID: ${body.customId}`);
             if (body.customId) {
               window.location.href = `/d/${body.customId}`;
             }

@@ -46,10 +46,11 @@ export const integrationDetailOption = (id: number) =>
     },
   });
 
-export function useIngredientAddMutation(comment: string) {
+export function useIngredientAddMutation() {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: () =>
+    mutationFn: (comment: string) =>
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/feedback/ingredient-request-feedback`, {
         method: "POST",
         headers: {
@@ -57,7 +58,7 @@ export function useIngredientAddMutation(comment: string) {
         },
         body: JSON.stringify({ comment }),
       }),
-    onSuccess: () => {
+    onSuccess: (_, comment) => {
       queryClient.cancelQueries(integrationSearchOption(comment));
     },
   });
