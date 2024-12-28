@@ -56,12 +56,12 @@ export function HomeAnimation({ item }: AnimationProps) {
         items.map(({ img, id }) => {
           const x = Common.random(0, width);
           const y = Common.random(0, height);
-          const body = Bodies.rectangle(x, y, img.width * 0.8, img.height * 0.8, {
+          const body = Bodies.rectangle(x, y, img.width * 0.7, img.height * 0.7, {
             render: {
               sprite: {
                 texture: img.src,
-                xScale: 0.8,
-                yScale: 0.8,
+                xScale: 0.7,
+                yScale: 0.7,
               },
             },
           });
