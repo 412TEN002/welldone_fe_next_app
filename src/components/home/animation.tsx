@@ -1,6 +1,7 @@
 "use client";
 
 import Matter from "matter-js";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { IntegrationType } from "@/query-options/integration";
 
@@ -8,9 +9,14 @@ interface AnimationProps {
   item: IntegrationType[];
 }
 
+interface CustomBody extends Matter.Body {
+  customId?: string;
+}
+
 export function HomeAnimation({ item }: AnimationProps) {
   const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const router = useRouter();
 
   const preloadImages = useCallback(async () => {
     const promises = item.map(({ home_icon_url, ...rest }) => {
@@ -93,15 +99,12 @@ export function HomeAnimation({ item }: AnimationProps) {
 
       Events.on(mouseConstraint, "mousedown", (event: any) => {
         const { mouse } = event;
-        const bodies = Composite.allBodies(world);
+        const clickedBody = Matter.Query.point(Composite.allBodies(world), mouse.position)[0] as CustomBody;
 
-        bodies.forEach((body: any) => {
-          if (Matter.Bounds.contains(body.bounds, mouse.position)) {
-            if (body.customId) {
-              window.location.href = `/d/${body.customId}`;
-            }
-          }
-        });
+        if (clickedBody?.customId) {
+          // Router.push를 사용하여 클라이언트 사이드 네비게이션
+          router.push(`/d/${clickedBody.customId}`);
+        }
       });
     };
 
