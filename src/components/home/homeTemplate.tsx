@@ -10,18 +10,26 @@ import { HomeAnimation } from "./animation";
 import { HomeCombobox } from "./combobox";
 import { HomeFilter } from "./filter";
 
-// const HomeAnimation = dynamic(async () => (await import("./animation")).HomeAnimation, { ssr: false });
 export function HomeTemplate() {
-  const { data } = useSuspenseQuery(integrationOption);
-  const [filterId, setFilterId] = useState<null | number>(null);
+  const { data: integrationData } = useSuspenseQuery(integrationOption);
 
-  const filteringData = useMemo(
-    () => (isNil(filterId) ? data : data.filter(({ category_id }) => category_id === filterId)),
-    [data],
-  );
+  const [filterId, setFilterId] = useState<null | number>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const filteringData = useMemo(() => {
+    if (isNil(filterId)) {
+      return integrationData;
+    }
+    return integrationData.filter((item) => Number(item.category_id) === Number(filterId));
+  }, [integrationData, filterId]);
+
+  const handleFilterChange = (newFilterId: number | null) => {
+    setFilterId(newFilterId);
+    setIsOpen(false);
+  };
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
       <div className="h-full w-full bg-primary">
         <div className="absolute flex w-full gap-2 p-5">
           <HomeCombobox />
@@ -30,11 +38,14 @@ export function HomeTemplate() {
           </Dialog.Trigger>
         </div>
         <HomeAnimation item={filteringData} />
-        {/* <HomeFixedImage item={filteringData} /> */}
       </div>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-overlay" />
-        <HomeFilter filterId={filterId} onFilterIdChange={(fid) => setFilterId(fid)} />
+        <HomeFilter
+          filterId={filterId}
+          onFilterIdChange={handleFilterChange}
+          onClose={() => setIsOpen(false)}
+        />
       </Dialog.Portal>
     </Dialog.Root>
   );

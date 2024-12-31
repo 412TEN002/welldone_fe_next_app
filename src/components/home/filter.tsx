@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Refresh from "@/assets/icon/refresh.svg";
 import { categoryOption } from "@/query-options/category";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -9,18 +9,38 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 interface HomeFilterProps {
   filterId: number | null;
   onFilterIdChange: (_: HomeFilterProps["filterId"]) => void;
+  onClose?: () => void;
 }
 
-export function HomeFilter({ filterId, onFilterIdChange }: HomeFilterProps) {
+export function HomeFilter({ filterId, onFilterIdChange, onClose }: HomeFilterProps) {
   const { data } = useSuspenseQuery(categoryOption);
   const [currentId, setId] = useState(filterId);
+
+  // filterId가 변경될 때 currentId를 동기화
+  useEffect(() => {
+    setId(filterId);
+  }, [filterId]);
+
+  const handleApply = () => {
+    onFilterIdChange(currentId);
+    onClose?.();
+  };
+
+  const handleReset = () => {
+    setId(null);
+    onFilterIdChange(null);
+  };
 
   return (
     <Dialog.Content className="fixed bottom-0 flex w-dvw flex-col items-center justify-center gap-[2px] rounded-t-2xl bg-primaryInvert">
       <div className="flex w-full justify-between px-[20px] pt-[22px]">
-        <Refresh onClick={() => setId(null)} />
-        <Dialog.Close onClick={() => onFilterIdChange(currentId)} className="font-semibold text-primary">
-          적용
+        <button onClick={handleReset}>
+          <Refresh />
+        </button>
+        <Dialog.Close asChild>
+          <button onClick={handleApply} className="font-semibold text-primary">
+            적용
+          </button>
         </Dialog.Close>
       </div>
       <Dialog.Title className="text-[18px] font-semibold text-primary">
