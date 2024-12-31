@@ -31,7 +31,9 @@ export function HomeAnimation({ item }: AnimationProps) {
     const width = window.innerWidth;
     const height = window.innerHeight;
     // Matter.js 엔진, 렌더, 러너 생성
-    const engine = Engine.create();
+    const engine = Engine.create({
+      enableSleeping: true,
+    });
     const world = engine.world;
 
     const render = Render.create({
@@ -43,6 +45,7 @@ export function HomeAnimation({ item }: AnimationProps) {
         wireframes: false,
         background: "#3C3731",
         pixelRatio: window.devicePixelRatio || 2,
+        showSleeping: false,
       },
     });
 
@@ -56,12 +59,12 @@ export function HomeAnimation({ item }: AnimationProps) {
         items.map(({ img, id }) => {
           const x = Common.random(0, width);
           const y = Common.random(0, height);
-          const body = Bodies.rectangle(x, y, img.width * 0.7, img.height * 0.7, {
+          const body = Bodies.rectangle(x, y, img.width * 0.6, img.height * 0.6, {
             render: {
               sprite: {
                 texture: img.src,
-                xScale: 0.7,
-                yScale: 0.7,
+                xScale: 0.6,
+                yScale: 0.6,
               },
             },
           });
@@ -79,6 +82,7 @@ export function HomeAnimation({ item }: AnimationProps) {
         Bodies.rectangle(0, height / 2, 10, height, rectangleOptions),
       ]);
 
+      // 마우스 상호작용 설정
       const mouse = Mouse.create(render.canvas);
       const mouseConstraint = MouseConstraint.create(engine, {
         mouse,
@@ -99,8 +103,6 @@ export function HomeAnimation({ item }: AnimationProps) {
           }
         });
       });
-
-      Render.lookAt(render, { min: { x: 0, y: 0 }, max: { x: width, y: height } });
     };
 
     preloadImages().then((items) => {

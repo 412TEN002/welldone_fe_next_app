@@ -14,7 +14,7 @@ export function DetailTemplate({ id }: DetailTemplateProps) {
 
   return (
     <div className={"flex h-full w-full flex-col items-center bg-primary"}>
-      <Image width={164} height={164} src={data.home_icon_url} alt={data.name} className={"mt-9"} />
+      <Image width={164} height={164} src={data.icon_url} alt={data.name} className={"mt-9"} />
       <div className="mt-[22px] rounded-[40px] bg-white24 px-3 py-[6px] text-sm text-primaryInvert">
         {data.name}
       </div>
