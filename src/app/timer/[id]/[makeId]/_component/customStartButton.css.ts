@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const button = tv({
-  base: ["outline-none", "border-none", "rounded-[24px]", "h-[80px]", "w-auto", "px-[52px]"],
+  base: ["outline-none", "border-none", "rounded-[24px]", "h-[80px]", "w-auto", "px-[52px]", "relative"],
   variants: {
     bg: {
       white: "bg-[#F3EDE4]",

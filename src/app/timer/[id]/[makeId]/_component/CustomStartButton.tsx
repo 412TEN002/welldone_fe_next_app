@@ -1,4 +1,6 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+"use client";
+
+import { HTMLMotionProps, motion } from "framer-motion";
 import * as styles from "./customStartButton.css";
 
 type Props = {
@@ -6,18 +8,16 @@ type Props = {
   theme: "white" | "black";
 };
 
-export default function CustomStartButton(
-  props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & Props,
-) {
+export default function CustomStartButton(props: Props & HTMLMotionProps<"button">) {
   const { children, isLong, theme, ...rest } = props;
 
   return (
-    <button
+    <motion.button
       type="button"
       className={styles.button({ className: isLong ? "px-[100px]" : "px-[52px]", bg: theme })}
       {...rest}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }

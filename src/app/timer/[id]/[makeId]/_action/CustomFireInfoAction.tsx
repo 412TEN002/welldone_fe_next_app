@@ -22,7 +22,12 @@ export default function CustomFireInfoAction({ id, makeId }: Props) {
         {localData.fire === "l" && "약불"}
         <Info />
       </a>
-      <Tooltip anchorSelect="#info" place="top">
+      <Tooltip
+        anchorSelect="#info"
+        place="top"
+        opacity="1"
+        style={{ background: "#FBF8F2", padding: 0, zIndex: 99 }}
+      >
         <CustomTooltip />
       </Tooltip>
     </>

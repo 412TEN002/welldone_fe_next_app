@@ -66,7 +66,7 @@ export function HomeAnimation({ item }: AnimationProps) {
             },
           });
 
-          body.customId = id;
+          (body as any).customId = id;
           return body;
         }),
       );

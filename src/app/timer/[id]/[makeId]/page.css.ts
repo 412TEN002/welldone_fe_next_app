@@ -27,7 +27,7 @@ export const timerLayer = tv({
 });
 
 export const makeLayer = tv({
-  base: ["grow", "mt-[58px]"],
+  base: ["h-[300px]", "mt-[58px]"],
 });
 
 export const buttonLayer = tv({

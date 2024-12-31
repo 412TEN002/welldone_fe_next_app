@@ -1,18 +1,18 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+"use client";
+
+import { HTMLMotionProps, motion } from "framer-motion";
 import * as styles from "./customResultButton.css";
 
 type Props = {
   theme: "black" | "white";
 };
 
-export default function CustomResetButton(
-  props: DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & Props,
-) {
+export default function CustomResetButton(props: Props & HTMLMotionProps<"button">) {
   const { children, theme, ...rest } = props;
 
   return (
-    <button type="button" className={styles.button({ bg: theme })} {...rest}>
+    <motion.button type="button" className={styles.button({ bg: theme })} {...rest}>
       {children}
-    </button>
+    </motion.button>
   );
 }

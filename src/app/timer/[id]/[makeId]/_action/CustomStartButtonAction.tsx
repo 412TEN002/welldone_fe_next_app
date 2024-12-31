@@ -28,6 +28,7 @@ export default function CustomStartButtonAction({ id, makeId }: Props) {
       isLong={!(currTime !== 0 && currTime !== localData.time)}
       onClick={onClickStart}
       theme={localData.theme}
+      layoutId="start"
     >
       {status === "play" ? <IconPause theme={localData.theme} /> : <IconPlay theme={localData.theme} />}
     </CustomStartButton>

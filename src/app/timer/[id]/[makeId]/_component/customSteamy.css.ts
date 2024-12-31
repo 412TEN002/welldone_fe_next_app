@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const layer = tv({
-  base: ["relative", "flex", "justify-center", "min-h-[200px]", "w-[200px]"],
+  base: ["relative", "flex", "justify-center", "min-h-[250px]", "w-[250px]"],
 });
 
 export const steamy = tv({
@@ -13,7 +13,7 @@ export const icon = tv({
 });
 
 export const fire = tv({
-  base: ["absolute", "bottom-0", "z-[2]"],
+  base: ["absolute", "bottom-[45px]", "z-[2]"],
 });
 
 export const action = tv({
