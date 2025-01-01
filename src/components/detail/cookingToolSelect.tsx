@@ -1,9 +1,10 @@
 "use client";
 
 import clsx from "clsx";
+import { router } from "next/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 import CustomResultButton from "@/components/detail/CustomResultButton";
 import { cookingToolOptions } from "@/query-options/cooking-tool";
@@ -24,6 +25,18 @@ export function CookingToolSelect(props: Props) {
   const [state, setState] = useState(() => data[0].id);
 
   const { back } = useRouter();
+
+  useEffect(() => {
+    const prefetchNextPage = async () => {
+      try {
+        await Promise.all(data.map(({ id: makeId }) => router.prefetch(`/timer/${props.id}/${makeId}`)));
+      } catch (error) {
+        console.error("Prefetch failed:", error);
+      }
+    };
+
+    prefetchNextPage();
+  }, [data, props.id]);
 
   return (
     <div className="fixed bottom-0 flex w-full flex-col items-center rounded-t-2xl bg-primaryInvert px-[18px]">

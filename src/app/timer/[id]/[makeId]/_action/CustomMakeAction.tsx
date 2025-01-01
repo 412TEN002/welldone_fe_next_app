@@ -39,28 +39,28 @@ export default function CustomMakeAction({ id, makeId }: Props) {
   if (makeId == 2) {
     if (status === "play")
       return (
-        <CustomOven>
-          <Image src={icon} alt="item" unoptimized width={120} height={80} />
-        </CustomOven>
+        <CustomSteamy fire={localData.fire}>
+          <Image src={icon} alt="item" layout="fill" unoptimized />
+        </CustomSteamy>
       );
 
     return (
-      <CustomOvenPre>
-        <Image src={icon} alt="item" unoptimized width={120} height={80} />
-      </CustomOvenPre>
+      <CustomSteamyPre fire={localData.fire}>
+        <Image src={icon} alt="item" layout="fill" unoptimized />
+      </CustomSteamyPre>
     );
   }
 
   if (status === "play")
     return (
-      <CustomSteamy fire={localData.fire}>
-        <Image src={icon} alt="item" layout="fill" unoptimized />
-      </CustomSteamy>
+      <CustomOven>
+        <Image src={icon} alt="item" unoptimized width={120} height={80} />
+      </CustomOven>
     );
 
   return (
-    <CustomSteamyPre fire={localData.fire}>
-      <Image src={icon} alt="item" layout="fill" unoptimized />
-    </CustomSteamyPre>
+    <CustomOvenPre>
+      <Image src={icon} alt="item" unoptimized width={120} height={80} />
+    </CustomOvenPre>
   );
 }

@@ -2,7 +2,7 @@
 
 import Matter from "matter-js";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IntegrationType } from "@/query-options/integration";
 
 interface AnimationProps {
@@ -17,6 +17,20 @@ export function HomeAnimation({ item }: AnimationProps) {
   const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const router = useRouter();
+  const isNavigating = useRef(false);
+
+  // 클릭 핸들러를 최적화
+  const handleBodyClick = useCallback(
+    (customId: string) => {
+      if (isNavigating.current) return; // 이미 네비게이팅 중이면 무시
+
+      isNavigating.current = true;
+
+      // prefetch를 사용하여 다음 페이지 미리 로드
+      router.prefetch(`/d/${customId}`);
+    },
+    [router],
+  );
 
   const preloadImages = useCallback(async () => {
     const promises = item.map(({ home_icon_url, ...rest }) => {
@@ -60,39 +74,83 @@ export function HomeAnimation({ item }: AnimationProps) {
     Runner.run(runner, engine);
 
     const initializeScene = (items: (IntegrationType & { img: HTMLImageElement })[]) => {
+      const wallThickness = 100;
+
+      const rectangleOptions = {
+        isStatic: true,
+        render: { visible: false },
+        friction: 0.2,
+        restitution: 0.4,
+      };
+
+      const walls = [
+        Bodies.rectangle(
+          width / 2,
+          -wallThickness / 2,
+          width + wallThickness * 2,
+          wallThickness,
+          rectangleOptions,
+        ),
+        Bodies.rectangle(
+          width / 2,
+          height + wallThickness / 2,
+          width + wallThickness * 2,
+          wallThickness,
+          rectangleOptions,
+        ),
+        Bodies.rectangle(
+          -wallThickness / 2,
+          height / 2,
+          wallThickness,
+          height + wallThickness * 2,
+          rectangleOptions,
+        ),
+        Bodies.rectangle(
+          width + wallThickness / 2,
+          height / 2,
+          wallThickness,
+          height + wallThickness * 2,
+          rectangleOptions,
+        ),
+      ];
+
+      Composite.add(world, walls);
+
+      // 터치 이벤트 최적화를 위한 바운딩 박스 크기 조정
       items.forEach(({ img, id }) => {
-        const x = Common.random(0, width);
-        const y = Common.random(0, height);
-        const body = Bodies.rectangle(x, y, img.width * 0.71, img.height * 0.71, {
+        const scale = 0.7;
+        const w = img.width * scale;
+        const h = img.height * scale;
+        const x = Common.random(w / 2 + 50, width - w / 2 - 50);
+        const y = Common.random(h / 2 + 50, height - h / 2 - 50);
+
+        const body = Bodies.rectangle(x, y, w, h, {
           render: {
             sprite: {
               texture: img.src,
-              xScale: 0.7,
-              yScale: 0.7,
+              xScale: scale,
+              yScale: scale,
             },
           },
+          friction: 0.1,
+          restitution: 0.5,
+          density: 0.001,
+          chamfer: { radius: 5 }, // 모서리를 부드럽게 하여 충돌 처리 최적화
         });
 
         (body as any).customId = id;
         return Composite.add(world, body);
       });
 
-      const rectangleOptions = {
-        isStatic: true,
-        render: { visible: false },
-      };
-      Composite.add(world, [
-        Bodies.rectangle(width / 2, 0, width, 10, rectangleOptions),
-        Bodies.rectangle(width / 2, height, width, 20, rectangleOptions),
-        Bodies.rectangle(width, height / 2, 10, height, rectangleOptions),
-        Bodies.rectangle(0, height / 2, 10, height, rectangleOptions),
-      ]);
-
-      // 마우스 상호작용 설정
+      // 터치 이벤트 최적화
       const mouse = Mouse.create(render.canvas);
       const mouseConstraint = MouseConstraint.create(engine, {
         mouse,
-        constraint: { stiffness: 0.2, render: { visible: false } },
+        constraint: {
+          stiffness: 0.2,
+          render: { visible: false },
+          damping: 0.5,
+        },
       });
 
       Composite.add(world, mouseConstraint);
@@ -110,27 +168,42 @@ export function HomeAnimation({ item }: AnimationProps) {
         }
       });
 
+      let lastClickTime = 0;
+      const CLICK_DELAY = 300; // 더블 클릭 방지를 위한 딜레이
+
       Events.on(mouseConstraint, "mouseup", (event: any) => {
         // 드래그 중이 아니고, 마우스가 이동하지 않았을 때만 클릭으로 처리
         if (!hasMoved) {
+          const currentTime = Date.now();
+          if (currentTime - lastClickTime < CLICK_DELAY) return;
+          lastClickTime = currentTime;
+
           const { mouse } = event;
           const clickedBody = Matter.Query.point(Composite.allBodies(world), mouse.position)[0] as CustomBody;
           if (clickedBody?.customId) {
             router.push(`/d/${clickedBody.customId}`);
           }
         }
-
-        // 상태 초기화
-        hasMoved = false;
       });
+
+      // 터치 이벤트에 대한 추가 최적화
+      if ("ontouchstart" in window) {
+        render.canvas.addEventListener(
+          "touchstart",
+          (e) => {
+            e.preventDefault();
+          },
+          { passive: false },
+        );
+      }
     };
 
     preloadImages().then((items) => {
       initializeScene(items);
     });
 
-    // 클린업
     return () => {
+      isNavigating.current = false;
       if (render) {
         Render.stop(render);
         render.canvas.remove();
@@ -144,10 +217,13 @@ export function HomeAnimation({ item }: AnimationProps) {
         Matter.Engine.clear(engine);
       }
     };
-  }, [sceneRef, item]);
+  }, [sceneRef, item, handleBodyClick]);
 
   return (
-    <div className="flex h-full w-full items-center justify-center overflow-auto" ref={setSceneRef}>
+    <div
+      className="flex h-full w-full touch-none items-center justify-center overflow-hidden"
+      ref={setSceneRef}
+    >
       {!imagesLoaded ? <p className="animate-pulse text-white">...로딩 중</p> : null}
     </div>
   );
