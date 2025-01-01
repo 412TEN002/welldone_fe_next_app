@@ -37,7 +37,6 @@ export function CookingToolSelect(props: Props) {
               id === state && "border-toolSelect bg-white",
             )}
             onClick={() => {
-              console.log(state);
               setState(id);
             }}
           >
