@@ -22,6 +22,8 @@ export default function CustomResultButton({ id, makeId, name, icon }: Props) {
     if (isNavigating.current) return;
     isNavigating.current = true;
 
+    setSelect(name, icon);
+
     // 마이크로태스크 큐를 사용하여 라우팅 최적화
     queueMicrotask(() => {
       router.push(`/timer/${id}/${makeId}`);

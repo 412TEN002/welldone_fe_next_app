@@ -1,9 +1,9 @@
 "use client";
 
 import clsx from "clsx";
-import { router } from "next/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+// Remove the next/client import
 import { useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 import CustomResultButton from "@/components/detail/CustomResultButton";
@@ -23,8 +23,7 @@ type Props = {
 export function CookingToolSelect(props: Props) {
   const { data } = useSuspenseQuery(cookingToolOptions);
   const [state, setState] = useState(() => data[0].id);
-
-  const { back } = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const prefetchNextPage = async () => {
@@ -36,7 +35,7 @@ export function CookingToolSelect(props: Props) {
     };
 
     prefetchNextPage();
-  }, [data, props.id]);
+  }, [data, props.id, router]); // Add router to dependencies
 
   return (
     <div className="fixed bottom-0 flex w-full flex-col items-center rounded-t-2xl bg-primaryInvert px-[18px]">
@@ -62,7 +61,7 @@ export function CookingToolSelect(props: Props) {
         ))}
       </div>
       <div className={"mb-[30px] mt-4 flex w-full gap-3"}>
-        <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={back}>
+        <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={() => router.back()}>
           취소
         </button>
         <CustomResultButton makeId={state} {...props} />
