@@ -33,11 +33,10 @@ export function CookingToolSelect(props: Props) {
           <button
             key={id}
             className={clsx(
-              "flex w-full gap-10 rounded-lg px-[10px] py-[18px]",
-              id === state && "border-toolSelect bg-white",
+              "box-border flex w-full gap-10 rounded-lg px-[10px] py-[18px]",
+              id === state && "bg-white outline outline-[1px] outline-toolSelect",
             )}
             onClick={() => {
-              console.log(state);
               setState(id);
             }}
           >
@@ -49,7 +48,7 @@ export function CookingToolSelect(props: Props) {
           </button>
         ))}
       </div>
-      <div className={"mb-[30px] flex w-full gap-3"}>
+      <div className={"mb-[30px] mt-4 flex w-full gap-3"}>
         <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={back}>
           취소
         </button>

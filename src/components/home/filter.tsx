@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Refresh from "@/assets/icon/refresh.svg";
 import { categoryOption } from "@/query-options/category";
 import * as Dialog from "@radix-ui/react-dialog";
@@ -9,21 +9,14 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 interface HomeFilterProps {
   filterId: number | null;
   onFilterIdChange: (_: HomeFilterProps["filterId"]) => void;
-  onClose?: () => void;
 }
 
-export function HomeFilter({ filterId, onFilterIdChange, onClose }: HomeFilterProps) {
+export function HomeFilter({ filterId, onFilterIdChange }: HomeFilterProps) {
   const { data } = useSuspenseQuery(categoryOption);
   const [currentId, setId] = useState(filterId);
 
-  // filterId가 변경될 때 currentId를 동기화
-  useEffect(() => {
-    setId(filterId);
-  }, [filterId]);
-
   const handleApply = () => {
     onFilterIdChange(currentId);
-    onClose?.();
   };
 
   const handleReset = () => {
