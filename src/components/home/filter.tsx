@@ -34,11 +34,11 @@ export function HomeFilter({ filterId, onFilterIdChange, onClose }: HomeFilterPr
   return (
     <Dialog.Content className="fixed bottom-0 flex w-dvw flex-col items-center justify-center gap-[2px] rounded-t-2xl bg-primaryInvert">
       <div className="flex w-full justify-between px-[20px] pt-[22px]">
-        <button onClick={handleReset}>
+        <button onClick={handleReset} className="focus:outline-none">
           <Refresh />
         </button>
         <Dialog.Close asChild>
-          <button onClick={handleApply} className="font-semibold text-primary">
+          <button onClick={handleApply} className="font-semibold text-primary focus:outline-none">
             적용
           </button>
         </Dialog.Close>
