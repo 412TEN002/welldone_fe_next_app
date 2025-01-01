@@ -24,18 +24,21 @@ interface CommandInputProps extends React.ComponentPropsWithoutRef<"input"> {
 
 const CommandInput = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Input>, CommandInputProps>(
   ({ className, onReset, ...props }, ref) => (
-    <div className="flex h-[40px] items-center gap-2 rounded-[10px] bg-secondary px-3" cmdk-input-wrapper="">
-      <Search />
+    <div
+      className="flex h-[40px] min-w-0 items-center gap-1 rounded-[10px] bg-secondary px-2"
+      cmdk-input-wrapper=""
+    >
+      <Search className="min-w-[20px]" />
       <input
         ref={ref}
         className={cn(
-          "flex flex-1 bg-transparent py-3 text-sm text-white outline-none placeholder:text-white30 disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
+          "flex min-w-0 flex-1 bg-transparent py-3 text-white outline-none placeholder:text-white30 disabled:opacity-50 placeholder:disabled:cursor-not-allowed",
           className,
         )}
         {...props}
       />
       {props.value?.toString()?.length && props.value.toString().length > 0 ? (
-        <CircleClose onClick={onReset} />
+        <CircleClose className="min-w-[20px]" onClick={onReset} />
       ) : null}
     </div>
   ),

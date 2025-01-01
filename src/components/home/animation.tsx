@@ -60,27 +60,27 @@ export function HomeAnimation({ item }: AnimationProps) {
     Runner.run(runner, engine);
 
     const initializeScene = (items: (IntegrationType & { img: HTMLImageElement })[]) => {
-      Composite.add(
-        world,
-        items.map(({ img, id }) => {
-          const x = Common.random(0, width);
-          const y = Common.random(0, height);
-          const body = Bodies.rectangle(x, y, img.width * 0.6, img.height * 0.6, {
-            render: {
-              sprite: {
-                texture: img.src,
-                xScale: 0.6,
-                yScale: 0.6,
-              },
+      items.forEach(({ img, id }) => {
+        const x = Common.random(0, width);
+        const y = Common.random(0, height);
+        const body = Bodies.rectangle(x, y, img.width * 0.65, img.height * 0.65, {
+          render: {
+            sprite: {
+              texture: img.src,
+              xScale: 0.7,
+              yScale: 0.7,
             },
-          });
+          },
+        });
 
-          (body as any).customId = id;
-          return body;
-        }),
-      );
+        (body as any).customId = id;
+        return Composite.add(world, body);
+      });
 
-      const rectangleOptions = { isStatic: true, render: { visible: false } };
+      const rectangleOptions = {
+        isStatic: true,
+        render: { visible: false },
+      };
       Composite.add(world, [
         Bodies.rectangle(width / 2, 0, width, 10, rectangleOptions),
         Bodies.rectangle(width / 2, height, width, 20, rectangleOptions),
@@ -94,17 +94,34 @@ export function HomeAnimation({ item }: AnimationProps) {
         mouse,
         constraint: { stiffness: 0.2, render: { visible: false } },
       });
+
       Composite.add(world, mouseConstraint);
       render.mouse = mouse;
 
-      Events.on(mouseConstraint, "mousedown", (event: any) => {
-        const { mouse } = event;
-        const clickedBody = Matter.Query.point(Composite.allBodies(world), mouse.position)[0] as CustomBody;
+      let hasMoved = false;
 
-        if (clickedBody?.customId) {
-          // Router.push를 사용하여 클라이언트 사이드 네비게이션
-          router.push(`/d/${clickedBody.customId}`);
+      Events.on(mouseConstraint, "mousedown", (event: any) => {
+        hasMoved = false;
+      });
+
+      Events.on(mouseConstraint, "mousemove", (event: any) => {
+        if (mouseConstraint.body) {
+          hasMoved = true;
         }
+      });
+
+      Events.on(mouseConstraint, "mouseup", (event: any) => {
+        // 드래그 중이 아니고, 마우스가 이동하지 않았을 때만 클릭으로 처리
+        if (!hasMoved) {
+          const { mouse } = event;
+          const clickedBody = Matter.Query.point(Composite.allBodies(world), mouse.position)[0] as CustomBody;
+          if (clickedBody?.customId) {
+            router.push(`/d/${clickedBody.customId}`);
+          }
+        }
+
+        // 상태 초기화
+        hasMoved = false;
       });
     };
 
