@@ -14,7 +14,6 @@ export function HomeTemplate() {
   const { data: integrationData } = useSuspenseQuery(integrationOption);
 
   const [filterId, setFilterId] = useState<null | number>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const filteringData = useMemo(() => {
     if (isNil(filterId)) {
@@ -25,11 +24,10 @@ export function HomeTemplate() {
 
   const handleFilterChange = (newFilterId: number | null) => {
     setFilterId(newFilterId);
-    setIsOpen(false);
   };
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Root>
       <div className="h-full w-full bg-primary">
         <div className="absolute flex w-full gap-2 p-5">
           <HomeCombobox />
@@ -41,11 +39,7 @@ export function HomeTemplate() {
       </div>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-overlay" />
-        <HomeFilter
-          filterId={filterId}
-          onFilterIdChange={handleFilterChange}
-          onClose={() => setIsOpen(false)}
-        />
+        <HomeFilter filterId={filterId} onFilterIdChange={handleFilterChange} />
       </Dialog.Portal>
     </Dialog.Root>
   );
