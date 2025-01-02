@@ -21,10 +21,6 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
     if (asset.length === 0 || width === 0 || height === 0) return;
 
     asset.forEach(async (datum) => {
-      const response = await fetch(datum.home_icon_url);
-
-      if (!response.ok) throw new Error("Failed to fetch home_icon");
-
       const img = new Image();
       img.src = datum.home_icon_url;
       await new Promise((resolve) => (img.onload = resolve));
