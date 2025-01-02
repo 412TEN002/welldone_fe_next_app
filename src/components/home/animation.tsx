@@ -46,6 +46,7 @@ export function HomeAnimation({ item }: AnimationProps) {
     const world = engine.world;
 
     const render = Render.create({
+      element: sceneRef.current,
       engine,
       options: {
         width,
