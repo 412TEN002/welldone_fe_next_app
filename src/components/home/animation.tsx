@@ -14,8 +14,10 @@ interface CustomBody extends Matter.Body {
 }
 
 export function HomeAnimation({ item }: AnimationProps) {
-  const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
+  const sceneRef = useRef<HTMLDivElement | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const engineRef = useRef<Matter.Engine | null>(null);
+
   const router = useRouter();
 
   const preloadImages = useCallback(async () => {
@@ -33,17 +35,17 @@ export function HomeAnimation({ item }: AnimationProps) {
   }, [item]);
 
   useEffect(() => {
-    if (!sceneRef) return;
+    if (!sceneRef.current) return;
+    if (engineRef.current) return;
 
     const { Engine, Render, Runner, Composite, Bodies, Common, Mouse, MouseConstraint, Events } = Matter;
     const width = window.innerWidth;
     const height = window.innerHeight;
     // Matter.js 엔진, 렌더, 러너 생성
-    const engine = Engine.create();
+    const engine = Engine.create({ enableSleeping: true });
     const world = engine.world;
 
     const render = Render.create({
-      element: sceneRef,
       engine,
       options: {
         width,
@@ -182,9 +184,6 @@ export function HomeAnimation({ item }: AnimationProps) {
           { passive: false },
         );
       }
-
-      // 초기화 완료 후 물리 엔진 슬립 모드 활성화
-      engine.enableSleeping = true;
     };
 
     preloadImages().then((items) => {
@@ -192,6 +191,10 @@ export function HomeAnimation({ item }: AnimationProps) {
     });
 
     return () => {
+      if (engine) {
+        engineRef.current = engine;
+      }
+
       if (render) {
         Render.stop(render);
         render.canvas.remove();
@@ -220,10 +223,7 @@ export function HomeAnimation({ item }: AnimationProps) {
   }, [sceneRef, item]);
 
   return (
-    <div
-      className="flex h-full w-full touch-none items-center justify-center overflow-hidden"
-      ref={setSceneRef}
-    >
+    <div className="flex h-full w-full touch-none items-center justify-center overflow-hidden" ref={sceneRef}>
       {!imagesLoaded ? <p className="animate-pulse text-white">...로딩 중</p> : null}
     </div>
   );
