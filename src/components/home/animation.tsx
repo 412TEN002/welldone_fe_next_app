@@ -27,9 +27,7 @@ export function HomeAnimation({ item }: AnimationProps) {
         img.onload = () => resolve({ ...rest, home_icon_url, img });
       });
     });
-    await Promise.all(promises).then(() => {
-      setImagesLoaded(true);
-    });
+    setImagesLoaded(true);
     return await Promise.all(promises);
   }, [item]);
 
