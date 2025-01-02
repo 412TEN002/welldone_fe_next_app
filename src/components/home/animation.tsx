@@ -14,9 +14,9 @@ interface CustomBody extends Matter.Body {
 }
 
 export function HomeAnimation({ item }: AnimationProps) {
-  const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isReady, setIsReady] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
-
   const router = useRouter();
 
   const preloadImages = useCallback(async () => {
@@ -31,22 +31,40 @@ export function HomeAnimation({ item }: AnimationProps) {
     return await Promise.all(promises);
   }, [item]);
 
+  // 컴포넌트 마운트 시 크기 체크
   useEffect(() => {
-    if (!sceneRef) return;
+    if (containerRef.current) {
+      const containerSize = {
+        width: containerRef.current.offsetWidth,
+        height: containerRef.current.offsetHeight,
+      };
+
+      if (containerSize.width > 0 && containerSize.height > 0) {
+        setIsReady(true);
+      }
+    }
+  }, []);
+
+  // Matter.js 초기화
+  useEffect(() => {
+    if (!isReady || !containerRef.current) return;
 
     const { Engine, Render, Runner, Composite, Bodies, Common, Mouse, MouseConstraint, Events } = Matter;
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    // Matter.js 엔진, 렌더, 러너 생성
+
+    const containerSize = {
+      width: containerRef.current.offsetWidth,
+      height: containerRef.current.offsetHeight,
+    };
+
     const engine = Engine.create({ enableSleeping: true });
     const world = engine.world;
 
     const render = Render.create({
-      element: sceneRef,
+      element: containerRef.current,
       engine,
       options: {
-        width,
-        height,
+        width: containerSize.width,
+        height: containerSize.height,
         wireframes: false,
         background: "#3C3731",
         pixelRatio: window.devicePixelRatio || 2,
@@ -70,44 +88,43 @@ export function HomeAnimation({ item }: AnimationProps) {
 
       const walls = [
         Bodies.rectangle(
-          width / 2,
+          containerSize.width / 2,
           -wallThickness / 2,
-          width + wallThickness * 2,
+          containerSize.width + wallThickness * 2,
           wallThickness,
           rectangleOptions,
         ),
         Bodies.rectangle(
-          width / 2,
-          height + wallThickness / 2,
-          width + wallThickness * 2,
+          containerSize.width / 2,
+          containerSize.height + wallThickness / 2,
+          containerSize.width + wallThickness * 2,
           wallThickness,
           rectangleOptions,
         ),
         Bodies.rectangle(
           -wallThickness / 2,
-          height / 2,
+          containerSize.height / 2,
           wallThickness,
-          height + wallThickness * 2,
+          containerSize.height + wallThickness * 2,
           rectangleOptions,
         ),
         Bodies.rectangle(
-          width + wallThickness / 2,
-          height / 2,
+          containerSize.width + wallThickness / 2,
+          containerSize.height / 2,
           wallThickness,
-          height + wallThickness * 2,
+          containerSize.height + wallThickness * 2,
           rectangleOptions,
         ),
       ];
 
       Composite.add(world, walls);
 
-      // 터치 이벤트 최적화를 위한 바운딩 박스 크기 조정
       items.forEach(({ img, id }) => {
         const scale = 0.7;
         const w = img.width * scale;
         const h = img.height * scale;
-        const x = Common.random(w / 2 + 50, width - w / 2 - 50);
-        const y = Common.random(h / 2 + 50, height - h / 2 - 50);
+        const x = Common.random(w / 2 + 50, containerSize.width - w / 2 - 50);
+        const y = Common.random(h / 2 + 50, containerSize.height - h / 2 - 50);
 
         const body = Bodies.rectangle(x, y, w, h, {
           render: {
@@ -120,14 +137,13 @@ export function HomeAnimation({ item }: AnimationProps) {
           friction: 0.1,
           restitution: 0.5,
           density: 0.001,
-          chamfer: { radius: 5 }, // 모서리를 부드럽게 하여 충돌 처리 최적화
+          chamfer: { radius: 5 },
         });
 
         (body as any).customId = id;
-        return Composite.add(world, body);
+        Composite.add(world, body);
       });
 
-      // 터치 이벤트 최적화
       const mouse = Mouse.create(render.canvas);
       const mouseConstraint = MouseConstraint.create(engine, {
         mouse,
@@ -142,36 +158,33 @@ export function HomeAnimation({ item }: AnimationProps) {
       render.mouse = mouse;
 
       let hasMoved = false;
-
-      Events.on(mouseConstraint, "mousedown", (event: any) => {
+      Events.on(mouseConstraint, "mousedown", () => {
         hasMoved = false;
       });
 
-      Events.on(mouseConstraint, "mousemove", (event: any) => {
+      Events.on(mouseConstraint, "mousemove", () => {
         if (mouseConstraint.body) {
           hasMoved = true;
         }
       });
 
       let lastClickTime = 0;
-      const CLICK_DELAY = 300; // 더블 클릭 방지를 위한 딜레이
+      const CLICK_DELAY = 300;
 
       Events.on(mouseConstraint, "mouseup", (event: any) => {
-        // 드래그 중이 아니고, 마우스가 이동하지 않았을 때만 클릭으로 처리
         if (!hasMoved) {
           const currentTime = Date.now();
           if (currentTime - lastClickTime < CLICK_DELAY) return;
           lastClickTime = currentTime;
 
-          const { mouse } = event;
           const clickedBody = Matter.Query.point(Composite.allBodies(world), mouse.position)[0] as CustomBody;
+
           if (clickedBody?.customId) {
             router.push(`/d/${clickedBody.customId}`);
           }
         }
       });
 
-      // 터치 이벤트에 대한 추가 최적화
       if ("ontouchstart" in window) {
         render.canvas.addEventListener(
           "touchstart",
@@ -188,26 +201,19 @@ export function HomeAnimation({ item }: AnimationProps) {
     });
 
     return () => {
-      if (render) {
-        Render.stop(render);
-        render.canvas.remove();
-        render.textures = {};
-      }
-      if (runner) {
-        Runner.stop(runner);
-      }
-      if (engine) {
-        // 엔진 정리
-        Matter.Composite.clear(engine.world, false);
-        Matter.Engine.clear(engine);
-      }
+      Render.stop(render);
+      Runner.stop(runner);
+      render.canvas.remove();
+      render.textures = {};
+      Matter.Composite.clear(world, false);
+      Matter.Engine.clear(engine);
     };
-  }, [sceneRef, item]);
+  }, [isReady, item, router, preloadImages]);
 
   return (
     <div
       className="flex h-full w-full touch-none items-center justify-center overflow-hidden"
-      ref={setSceneRef}
+      ref={containerRef}
     >
       {!imagesLoaded ? <p className="animate-pulse text-white">...로딩 중</p> : null}
     </div>
