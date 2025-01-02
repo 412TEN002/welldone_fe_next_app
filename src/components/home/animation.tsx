@@ -14,9 +14,8 @@ interface CustomBody extends Matter.Body {
 }
 
 export function HomeAnimation({ item }: AnimationProps) {
-  const sceneRef = useRef<HTMLDivElement | null>(null);
+  const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const engineRef = useRef<Matter.Engine | null>(null);
 
   const router = useRouter();
 
@@ -35,8 +34,7 @@ export function HomeAnimation({ item }: AnimationProps) {
   }, [item]);
 
   useEffect(() => {
-    if (!sceneRef.current) return;
-    if (engineRef.current) return;
+    if (!sceneRef) return;
 
     const { Engine, Render, Runner, Composite, Bodies, Common, Mouse, MouseConstraint, Events } = Matter;
     const width = window.innerWidth;
@@ -46,7 +44,7 @@ export function HomeAnimation({ item }: AnimationProps) {
     const world = engine.world;
 
     const render = Render.create({
-      element: sceneRef.current,
+      element: sceneRef,
       engine,
       options: {
         width,
@@ -192,10 +190,6 @@ export function HomeAnimation({ item }: AnimationProps) {
     });
 
     return () => {
-      if (engine) {
-        engineRef.current = engine;
-      }
-
       if (render) {
         Render.stop(render);
         render.canvas.remove();
@@ -221,10 +215,13 @@ export function HomeAnimation({ item }: AnimationProps) {
         Matter.Engine.clear(engine);
       }
     };
-  }, [item]);
+  }, [sceneRef, item]);
 
   return (
-    <div className="flex h-full w-full touch-none items-center justify-center overflow-hidden" ref={sceneRef}>
+    <div
+      className="flex h-full w-full touch-none items-center justify-center overflow-hidden"
+      ref={setSceneRef}
+    >
       {!imagesLoaded ? <p className="animate-pulse text-white">...로딩 중</p> : null}
     </div>
   );
