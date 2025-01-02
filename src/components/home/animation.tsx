@@ -199,17 +199,6 @@ export function HomeAnimation({ item }: AnimationProps) {
         Runner.stop(runner);
       }
       if (engine) {
-        // world 객체 정리
-        world.bodies.forEach((body) => {
-          Composite.remove(world, body);
-        });
-        world.constraints.forEach((constraint) => {
-          Composite.remove(world, constraint);
-        });
-        world.composites.forEach((composite) => {
-          Composite.remove(world, composite);
-        });
-
         // 엔진 정리
         Matter.Composite.clear(engine.world, false);
         Matter.Engine.clear(engine);
