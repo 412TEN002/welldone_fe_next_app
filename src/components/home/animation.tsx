@@ -40,7 +40,7 @@ export function HomeAnimation({ item }: AnimationProps) {
     const height = window.innerHeight;
     // Matter.js 엔진, 렌더, 러너 생성
     const engine = Engine.create({
-      enableSleeping: true,
+      enableSleeping: false,
     });
     const world = engine.world;
 
