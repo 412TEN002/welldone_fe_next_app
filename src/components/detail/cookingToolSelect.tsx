@@ -3,9 +3,9 @@
 import clsx from "clsx";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// Remove the next/client import
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
+// Remove the next/client import
 import CustomResultButton from "@/components/detail/CustomResultButton";
 import { cookingToolOptions } from "@/query-options/cooking-tool";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -25,17 +25,17 @@ export function CookingToolSelect(props: Props) {
   const [state, setState] = useState(() => data[0].id);
   const router = useRouter();
 
-  useEffect(() => {
-    const prefetchNextPage = async () => {
-      try {
-        await Promise.all(data.map(({ id: makeId }) => router.prefetch(`/timer/${props.id}/${makeId}`)));
-      } catch (error) {
-        console.error("Prefetch failed:", error);
-      }
-    };
+  const prefetchNextPage = useCallback(async () => {
+    try {
+      await Promise.all(data.map(({ id: makeId }) => router.prefetch(`/timer/${props.id}/${makeId}`)));
+    } catch (error) {
+      console.error("Prefetch failed:", error);
+    }
+  }, [data, props.id, router]);
 
+  useEffect(() => {
     prefetchNextPage();
-  }, [data, props.id, router]); // Add router to dependencies
+  }, [prefetchNextPage]);
 
   return (
     <div className="fixed bottom-0 flex w-full flex-col items-center rounded-t-2xl bg-primaryInvert px-[18px]">

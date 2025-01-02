@@ -22,11 +22,11 @@ export const HomeCombobox = () => {
     <Command ref={ref} className="gap-2">
       <CommandInput
         value={value}
-        onChange={({ target: { value } }) => {
+        onChange={({ target }) => {
           if (isSuccess) {
             reset();
           }
-          setValue(value);
+          setValue(target.value);
         }}
         onFocus={() => setOpen(true)}
         onReset={() => setValue("")}

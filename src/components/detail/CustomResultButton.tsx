@@ -1,8 +1,7 @@
 "use client";
 
-import { cx } from "class-variance-authority";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useTransition } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { buttonBase } from "@/components/detail/cookingToolSelect";
 import { useSelect } from "@/state/useTranslate";
 

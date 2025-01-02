@@ -145,11 +145,11 @@ export function HomeAnimation({ item }: AnimationProps) {
 
       let hasMoved = false;
 
-      Events.on(mouseConstraint, "mousedown", (event: any) => {
+      Events.on(mouseConstraint, "mousedown", () => {
         hasMoved = false;
       });
 
-      Events.on(mouseConstraint, "mousemove", (event: any) => {
+      Events.on(mouseConstraint, "mousemove", () => {
         if (mouseConstraint.body) {
           hasMoved = true;
         }
