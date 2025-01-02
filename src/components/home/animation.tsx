@@ -20,19 +20,6 @@ export function HomeAnimation({ item }: AnimationProps) {
 
   const router = useRouter();
 
-  // 클릭 핸들러를 최적화
-  const handleBodyClick = useCallback(
-    (customId: string) => {
-      if (isNavigating.current) return; // 이미 네비게이팅 중이면 무시
-
-      isNavigating.current = true;
-
-      // prefetch를 사용하여 다음 페이지 미리 로드
-      router.prefetch(`/d/${customId}`);
-    },
-    [router],
-  );
-
   const preloadImages = useCallback(async () => {
     const promises = item.map(({ home_icon_url, ...rest }) => {
       return new Promise<IntegrationType & { img: HTMLImageElement }>((resolve) => {
@@ -234,7 +221,7 @@ export function HomeAnimation({ item }: AnimationProps) {
         Matter.Engine.clear(engine);
       }
     };
-  }, [sceneRef, item, handleBodyClick]);
+  }, [item]);
 
   return (
     <div className="flex h-full w-full touch-none items-center justify-center overflow-hidden" ref={sceneRef}>
