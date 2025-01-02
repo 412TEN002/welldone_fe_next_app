@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
           </div>
           <CustomTitleAction id={id} makeId={makeId} />
         </hgroup>
-        <div className="w-full">
+        <div className={styles.tipLayer()}>
           <CustomTipAction id={id} makeId={makeId} />
           {/*<CustomTip />*/}
         </div>
