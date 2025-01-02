@@ -19,7 +19,7 @@ export const backLayer = tv({
 });
 
 export const tipLayer = tv({
-  base: ["min-h-[50px]"],
+  base: ["px-[16px]", "w-full"],
 });
 
 export const timerLayer = tv({

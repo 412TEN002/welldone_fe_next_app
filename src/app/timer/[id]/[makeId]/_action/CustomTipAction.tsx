@@ -1,7 +1,7 @@
 "use client";
 
+import CustomTip from "@/app/timer/[id]/[makeId]/_component/CustomTip";
 import { useCookingSettings } from "@/app/timer/[id]/[makeId]/_state/useCookingSettings";
-import { TipAccordion } from "@/components/ui/tipAccordion";
 
 type Props = {
   id: number;
@@ -11,7 +11,5 @@ type Props = {
 export default function CustomTipAction({ id, makeId }: Props) {
   const { localData } = useCookingSettings({ id, makeId });
 
-  return (
-    <TipAccordion trimTip={localData.tips.w} cookingTip={localData.tips.p} className={"top-[50px] px-4"} />
-  );
+  return <CustomTip w={localData.tips.w} p={localData.tips.p} />;
 }
