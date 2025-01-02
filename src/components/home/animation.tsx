@@ -17,7 +17,6 @@ export function HomeAnimation({ item }: AnimationProps) {
   const [sceneRef, setSceneRef] = useState<HTMLDivElement | null>(null);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const router = useRouter();
-  const isNavigating = useRef(false);
 
   const preloadImages = useCallback(async () => {
     const promises = item.map(({ home_icon_url, ...rest }) => {
@@ -27,7 +26,9 @@ export function HomeAnimation({ item }: AnimationProps) {
         img.onload = () => resolve({ ...rest, home_icon_url, img });
       });
     });
-    setImagesLoaded(true);
+    await Promise.all(promises).then(() => {
+      setImagesLoaded(true);
+    });
     return await Promise.all(promises);
   }, [item]);
 
@@ -190,7 +191,6 @@ export function HomeAnimation({ item }: AnimationProps) {
     });
 
     return () => {
-      isNavigating.current = false;
       if (render) {
         Render.stop(render);
         render.canvas.remove();
@@ -200,6 +200,18 @@ export function HomeAnimation({ item }: AnimationProps) {
         Runner.stop(runner);
       }
       if (engine) {
+        // world 객체 정리
+        world.bodies.forEach((body) => {
+          Composite.remove(world, body);
+        });
+        world.constraints.forEach((constraint) => {
+          Composite.remove(world, constraint);
+        });
+        world.composites.forEach((composite) => {
+          Composite.remove(world, composite);
+        });
+
+        // 엔진 정리
         Matter.Composite.clear(engine.world, false);
         Matter.Engine.clear(engine);
       }
