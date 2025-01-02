@@ -39,9 +39,7 @@ export function HomeAnimation({ item }: AnimationProps) {
     const width = window.innerWidth;
     const height = window.innerHeight;
     // Matter.js 엔진, 렌더, 러너 생성
-    const engine = Engine.create({
-      enableSleeping: false,
-    });
+    const engine = Engine.create();
     const world = engine.world;
 
     const render = Render.create({
@@ -184,6 +182,9 @@ export function HomeAnimation({ item }: AnimationProps) {
           { passive: false },
         );
       }
+
+      // 초기화 완료 후 물리 엔진 슬립 모드 활성화
+      engine.enableSleeping = true;
     };
 
     preloadImages().then((items) => {
