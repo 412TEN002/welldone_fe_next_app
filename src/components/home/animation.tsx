@@ -21,7 +21,7 @@ export function HomeAnimation({ item }: AnimationProps) {
 
   const { engine, render, width, height } = useRunner({ target: containerRef });
   useBoundary({ engine, width, height });
-  useMouseAction({ render, engine });
+  // useMouseAction({ render, engine });
   const { isLoading } = useAsset({ asset: item, engine, width, height });
 
   return (
