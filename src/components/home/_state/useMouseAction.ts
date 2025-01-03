@@ -62,13 +62,29 @@ export const useMouseAction = ({ engine, render }: Props) => {
 
     // 터치 이벤트에 대한 추가 최적화
     if ("ontouchstart" in window) {
-      render.canvas.addEventListener(
-        "touchstart",
-        (e) => {
-          e.preventDefault();
-        },
-        { passive: false },
-      );
+      const canvas = render.canvas;
+
+      const handleTouchStart = (event: TouchEvent) => {
+        const touch = event.touches[0];
+        const rect = canvas.getBoundingClientRect();
+
+        mouse.position.x = ((touch.clientX - rect.left) / rect.width) * canvas.width;
+        mouse.position.y = ((touch.clientY - rect.top) / rect.height) * canvas.height;
+
+        mouse.button = 0;
+      };
+
+      const handleTouchEnd = () => {
+        mouse.button = -1;
+      };
+
+      canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+      canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
+
+      return () => {
+        canvas.removeEventListener("touchstart", handleTouchStart);
+        canvas.removeEventListener("touchend", handleTouchEnd);
+      };
     }
   }, [render, engine]);
 };
