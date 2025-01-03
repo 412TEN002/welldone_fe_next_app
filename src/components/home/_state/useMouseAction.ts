@@ -52,11 +52,15 @@ export const useMouseAction = ({ engine, render }: Props) => {
         if (currentTime - lastClickTime < CLICK_DELAY) return;
         lastClickTime = currentTime;
 
-        const { mouse } = event;
+        const rect = render.canvas.getBoundingClientRect(); // 캔버스 위치 정보
+        const adjustedMousePosition = {
+          x: (mouse.position.x - rect.left) * pixelRatio,
+          y: (mouse.position.y - rect.top) * pixelRatio,
+        };
 
         const clickedBody = MATTER.Query.point(
           MATTER.Composite.allBodies(engine.world),
-          mouse.position,
+          adjustedMousePosition,
         )[0] as CustomBody;
         if (clickedBody?.customId) {
           router.push(`/d/${clickedBody.customId}`);
