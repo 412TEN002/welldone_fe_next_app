@@ -55,7 +55,7 @@ export function CookingToolSelect(props: Props) {
                 <Image src={icon_url} width={68} height={45} alt={name} />
                 <div className="flex flex-col items-start gap-[5px]">
                   <p className="font-bold text-primary">{name}</p>
-                  <p className="text-xs text-[#948C84]">{description}</p>
+                  <p className="text-left text-xs text-[#948C84]">{description}</p>
                 </div>
               </button>
             ))}

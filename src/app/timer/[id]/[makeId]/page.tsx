@@ -20,7 +20,7 @@ export default async function Page({ params }: Props) {
       <CustomSectionAction id={id} makeId={makeId}>
         <hgroup className={styles.hgroup()}>
           <div className={styles.backLayer()}>
-            <CustomBackAction />
+            <CustomBackAction id={id} makeId={makeId} />
           </div>
           <CustomTitleAction id={id} makeId={makeId} />
         </hgroup>
