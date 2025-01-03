@@ -6,6 +6,8 @@ import { CustomBody } from "@/components/home/animation";
 type Props = {
   engine: MATTER.Engine;
   render: MATTER.Render | null;
+  width: number;
+  height: number;
 };
 
 export const useMouseAction = ({ engine, render }: Props) => {
@@ -14,6 +16,7 @@ export const useMouseAction = ({ engine, render }: Props) => {
   useEffect(() => {
     if (!render) return;
 
+    const pixelRatio = window.devicePixelRatio || 2;
     const mouse = MATTER.Mouse.create(render.canvas);
     const mouseConstraint = MATTER.MouseConstraint.create(engine, {
       mouse,
@@ -50,6 +53,7 @@ export const useMouseAction = ({ engine, render }: Props) => {
         lastClickTime = currentTime;
 
         const { mouse } = event;
+
         const clickedBody = MATTER.Query.point(
           MATTER.Composite.allBodies(engine.world),
           mouse.position,
@@ -65,7 +69,27 @@ export const useMouseAction = ({ engine, render }: Props) => {
       render.canvas.addEventListener(
         "touchstart",
         (e) => {
+          const touch = e.touches[0];
+          const rect = render.canvas.getBoundingClientRect();
+          const adjustedTouchPosition = {
+            x: (touch.clientX - rect.left) * pixelRatio,
+            y: (touch.clientY - rect.top) * pixelRatio,
+          };
+
+          // Matter.js 가상 마우스 좌표 설정
+          mouse.position.x = adjustedTouchPosition.x;
+          mouse.position.y = adjustedTouchPosition.y;
+          mouse.button = 0; // 가상 클릭 이벤트
+
           e.preventDefault();
+        },
+        { passive: false },
+      );
+
+      render.canvas.addEventListener(
+        "touchend",
+        () => {
+          mouse.button = -1; // 가상 클릭 해제
         },
         { passive: false },
       );
