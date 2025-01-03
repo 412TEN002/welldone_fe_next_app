@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import BackButtonAction from "@/components/detail/_action/BackButtonAction";
 import { integrationDetailOption } from "@/query-options/integration";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CookingToolSelect } from "./cookingToolSelect";
+import * as styles from "./deatilTemplate.css";
 
 interface DetailTemplateProps {
   id: number;
@@ -13,8 +15,11 @@ export function DetailTemplate({ id }: DetailTemplateProps) {
   const { data } = useSuspenseQuery(integrationDetailOption(id));
 
   return (
-    <div className={"flex h-full w-full flex-col items-center bg-primary"}>
-      <Image width={164} height={164} src={data.icon_url} alt={data.name} className={"mt-9"} />
+    <section className={styles.container()}>
+      <BackButtonAction />
+      <article className={styles.asset()}>
+        <Image layout="fill" objectFit="contain" src={data.icon_url} alt={data.name} />
+      </article>
       <div className="mt-[22px] rounded-[40px] bg-white24 px-3 py-[6px] text-sm text-primaryInvert">
         {data.name}
       </div>
@@ -24,6 +29,6 @@ export function DetailTemplate({ id }: DetailTemplateProps) {
         ))}
       </div>
       <CookingToolSelect id={data.id} name={data.name} icon={data.icon_url} />
-    </div>
+    </section>
   );
 }

@@ -39,7 +39,7 @@ export const useRunner = ({ target }: Props) => {
       },
     });
 
-    engine.current.world.gravity.scale = 0.0008;
+    engine.current.world.gravity.scale = 0.0016;
     engine.current.world.gravity.y = 0.7;
 
     setRender(render);
