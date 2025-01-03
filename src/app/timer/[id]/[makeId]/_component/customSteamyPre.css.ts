@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const layer = tv({
-  base: ["relative", "flex", "justify-center", "min-h-[250px]", "w-[200px]"],
+  base: ["relative", "flex", "justify-center", "min-h-[250px]"],
 });
 
 export const steamy = tv({

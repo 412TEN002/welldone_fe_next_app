@@ -8,7 +8,6 @@ import CustomTimerAction from "@/app/timer/[id]/[makeId]/_action/CustomTimerActi
 import CustomTipAction from "@/app/timer/[id]/[makeId]/_action/CustomTipAction";
 import CustomTitleAction from "@/app/timer/[id]/[makeId]/_action/CustomTitleAction";
 import SuspenseCookingSettings from "@/app/timer/[id]/[makeId]/_action/SuspenseCookingSetting";
-import CustomTip from "@/app/timer/[id]/[makeId]/_component/CustomTip";
 import * as styles from "./page.css";
 
 type Props = { params: Promise<{ id: number; makeId: number }> };
@@ -27,7 +26,6 @@ export default async function Page({ params }: Props) {
         </hgroup>
         <div className={styles.tipLayer()}>
           <CustomTipAction id={id} makeId={makeId} />
-          {/*<CustomTip />*/}
         </div>
 
         <article className={styles.timerLayer()}>
