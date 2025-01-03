@@ -18,10 +18,10 @@ export const useRunner = ({ target }: Props) => {
       };
 
     return {
-      width: target.offsetWidth,
-      height: target.offsetHeight,
+      width: target.clientWidth,
+      height: target.clientHeight,
     };
-  }, [target?.offsetWidth, target?.offsetHeight]);
+  }, [target?.clientWidth, target?.clientHeight]);
 
   useEffect(() => {
     if (!target || len.width === 0 || len.height === 0) return;
