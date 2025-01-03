@@ -44,14 +44,36 @@ export default function CustomTip({ w, p }: Props) {
             transition={{ duration: 0.3 }}
             className={styles.optionLayer()}
           >
-            <div className={styles.layer()}>
-              <span className={styles.label()}>손질 팁</span>
-              <p className={styles.content()}>{w}</p>
-            </div>
-            <div className={styles.layer()}>
-              <span className={styles.label()}>조리 팁</span>
-              <p className={styles.content()}>{p}</p>
-            </div>
+            {w && (
+              <motion.div
+                className={styles.layer()}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
+                <span className={styles.label()}>손질 팁</span>
+                <div className={styles.content()}>
+                  <div className={styles.comma()} />
+                  <p className={styles.contentText()}>{w}</p>
+                </div>
+              </motion.div>
+            )}
+            {p && (
+              <motion.div
+                className={styles.layer()}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, delay: 0.15 }}
+              >
+                <span className={styles.label()}>조리 팁</span>
+                <div className={styles.content()}>
+                  <div className={styles.comma()} />
+                  <p className={styles.contentText()}>{p}</p>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

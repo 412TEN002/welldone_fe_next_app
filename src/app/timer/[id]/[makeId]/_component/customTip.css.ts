@@ -41,6 +41,10 @@ export const optionLayer = tv({
     "border-t",
     "border-[#DED8CF]",
     "rounded-b-[12px]",
+    "flex",
+    "flex-col",
+    "gap-[20px]",
+    "z-[999]",
   ],
 });
 
@@ -62,15 +66,13 @@ export const label = tv({
 });
 
 export const content = tv({
-  base: [
-    "text-[14px]",
-    "font-regular",
-    "text-[#51453E]",
-    "relative",
-    "pl-[1.5em]",
-    "before:content-['.']",
-    "before:left-0",
-    "before:text-[#51453E]",
-    "before:top-[0.15em]",
-  ],
+  base: ["flex"],
+});
+
+export const comma = tv({
+  base: ["min-w-[5px]", "h-[5px]", "bg-[#51453E]", "rounded-full", "mr-[15px]", "ml-[10px]", "mt-[7px]"],
+});
+
+export const contentText = tv({
+  base: ["text-[14px]", "font-regular", "text-[#51453E]"],
 });
