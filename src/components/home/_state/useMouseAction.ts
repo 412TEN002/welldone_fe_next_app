@@ -6,8 +6,6 @@ import { CustomBody } from "@/components/home/animation";
 type Props = {
   engine: MATTER.Engine;
   render: MATTER.Render | null;
-  width: number;
-  height: number;
 };
 
 export const useMouseAction = ({ engine, render }: Props) => {
@@ -45,14 +43,14 @@ export const useMouseAction = ({ engine, render }: Props) => {
     let lastClickTime = 0;
     const CLICK_DELAY = 300; // 더블 클릭 방지를 위한 딜레이
 
-    MATTER.Events.on(mouseConstraint, "mouseup", (event: any) => {
+    MATTER.Events.on(mouseConstraint, "mouseup", () => {
       // 드래그 중이 아니고, 마우스가 이동하지 않았을 때만 클릭으로 처리
       if (!hasMoved) {
         const currentTime = Date.now();
         if (currentTime - lastClickTime < CLICK_DELAY) return;
         lastClickTime = currentTime;
 
-        const rect = render.canvas.getBoundingClientRect(); // 캔버스 위치 정보
+        const rect = render.canvas.getBoundingClientRect();
         const adjustedMousePosition = {
           x: (mouse.position.x - rect.left) * pixelRatio,
           y: (mouse.position.y - rect.top) * pixelRatio,
@@ -80,10 +78,9 @@ export const useMouseAction = ({ engine, render }: Props) => {
             y: (touch.clientY - rect.top) * pixelRatio,
           };
 
-          // Matter.js 가상 마우스 좌표 설정
           mouse.position.x = adjustedTouchPosition.x;
           mouse.position.y = adjustedTouchPosition.y;
-          mouse.button = 0; // 가상 클릭 이벤트
+          mouse.button = 0;
 
           e.preventDefault();
         },
