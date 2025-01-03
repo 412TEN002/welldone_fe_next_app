@@ -34,7 +34,7 @@ export const useRunner = ({ target }: Props) => {
         height: len.height,
         wireframes: false,
         background: "#3c3731",
-        pixelRatio: window.devicePixelRatio || 2,
+        // pixelRatio: window.devicePixelRatio || 2,
         showSleeping: false,
       },
     });
