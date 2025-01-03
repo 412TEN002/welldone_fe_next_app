@@ -5,7 +5,7 @@ export const layer = tv({
 });
 
 export const action = tv({
-  base: ["absolute", "left-[-90px]", "bottom-[-60px]"],
+  base: ["absolute", "left-[-52px]", "bottom-[-60px]"],
 });
 
 export const icon = tv({
