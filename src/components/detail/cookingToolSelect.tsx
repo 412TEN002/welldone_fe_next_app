@@ -5,8 +5,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 import CustomResultButton from "@/components/detail/CustomResultButton";
-import { cookingToolOptions } from "@/query-options/cooking-tool";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import * as styles from "./cookingToolSelect.css";
 
 export const buttonBase = tv({
@@ -17,20 +15,20 @@ type Props = {
   id: number;
   name: string;
   icon: string;
+  tools: { id: number; name: string; icon_url: string; description: string }[];
 };
 
 export function CookingToolSelect(props: Props) {
-  const { data } = useSuspenseQuery(cookingToolOptions);
-  const [state, setState] = useState(() => data[0].id);
+  const [state, setState] = useState(() => props.tools[0].id);
   const router = useRouter();
 
   const prefetchNextPage = useCallback(async () => {
     try {
-      await Promise.all(data.map(({ id: makeId }) => router.prefetch(`/timer/${props.id}/${makeId}`)));
+      await Promise.all(props.tools.map(({ id: makeId }) => router.prefetch(`/timer/${props.id}/${makeId}`)));
     } catch (error) {
       console.error("Prefetch failed:", error);
     }
-  }, [data, props.id, router]);
+  }, [props.tools, props.id, router]);
 
   const onClickButton = (id: number) => () => {
     setState(id);
@@ -46,7 +44,7 @@ export function CookingToolSelect(props: Props) {
         <span className={styles.title()}>조리도구를 선택해주세요.</span>
         <div className={styles.layer()}>
           <div className={styles.layerOverflow()}>
-            {data.map(({ id, name, icon_url, description }) => (
+            {props.tools.map(({ id, name, icon_url, description }) => (
               <button
                 key={id}
                 className={styles.button({ select: id === state ? "yes" : "no" })}

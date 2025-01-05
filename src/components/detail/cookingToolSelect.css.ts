@@ -5,17 +5,7 @@ export const container = tv({
 });
 
 export const layerGroup = tv({
-  base: [
-    "w-full",
-    "flex",
-    "flex-col",
-    "items-center",
-    "rounded-t-2xl",
-    "bg-primaryInvert",
-    "px-[18px]",
-    "h-full",
-    "max-h-[426px]",
-  ],
+  base: ["w-full", "flex", "flex-col", "items-center", "rounded-t-2xl", "bg-primaryInvert", "px-[18px]"],
 });
 
 export const title = tv({
@@ -23,11 +13,11 @@ export const title = tv({
 });
 
 export const layer = tv({
-  base: ["w-full", "grow", "relative", "overflow-scroll", "scroll-none"],
+  base: ["w-full", "flex-1", "overflow-auto", "scroll-none"], // grow 대신 flex-1
 });
 
 export const layerOverflow = tv({
-  base: ["absolute", "inset-0", "w-full"],
+  base: ["w-full", "flex", "flex-col"], // absolute, inset-0 제거
 });
 
 export const button = tv({

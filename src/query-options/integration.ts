@@ -8,6 +8,7 @@ export interface IntegrationType {
   home_icon_url: string;
   icon_url: string;
   nutrition_tags: { id: number; name: string; description: string }[];
+  available_cooking_tools: { id: number; name: string; description: string; icon_url: string }[];
 }
 
 export const integrationOption = queryOptions({
