@@ -58,7 +58,7 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
 
       (body as any).customId = datum.id;
 
-      await new Promise((resolve) => setTimeout(resolve, 70 * index));
+      await new Promise((resolve) => setTimeout(resolve, 20 * index));
       MATTER.Composite.add(engine.world, body);
     });
 
