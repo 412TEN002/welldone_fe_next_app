@@ -25,6 +25,7 @@ body {
   font-family: Pretendard, Arial, Helvetica, sans-serif;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 }
 
 * {

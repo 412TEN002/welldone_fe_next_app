@@ -30,24 +30,21 @@ export const mainText = tv({
 });
 
 export const optionLayer = tv({
-  base: [
-    "absolute",
-    "right-0",
-    "left-0",
-    "top-[50px]",
-    "bg-[#F3EDE4]",
-    "p-[20px]",
-    "pt-[14px]",
-    "border-t",
-    "border-[#DED8CF]",
-    "rounded-b-[12px]",
-    "flex",
-    "flex-col",
-    "gap-[20px]",
-    "z-[999]",
-  ],
+  base: ["absolute", "right-0", "left-0", "top-[50px]", "bg-[#F3EDE4]", "rounded-b-[12px]", "z-[999]"],
 });
 
+export const innerOptionLayer = tv({
+  base: [
+    "mx-[16px]",
+    "p-[20px]",
+    "pt-[14px]",
+    "flex",
+    "flex-col",
+    "border-t-[1px]",
+    "border-[#DED8CF]",
+    "gap-[20px]",
+  ],
+});
 export const layer = tv({
   base: ["flex", "flex-col", "gap-[10px]"],
 });
@@ -70,7 +67,7 @@ export const content = tv({
 });
 
 export const comma = tv({
-  base: ["min-w-[5px]", "h-[5px]", "bg-[#51453E]", "rounded-full", "mr-[15px]", "ml-[10px]", "mt-[7px]"],
+  base: ["min-w-[3px]", "h-[3px]", "bg-[#51453E]", "rounded-full", "mr-[8px]", "ml-[10px]", "mt-[7px]"],
 });
 
 export const contentText = tv({

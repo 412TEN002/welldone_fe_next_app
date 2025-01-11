@@ -17,16 +17,18 @@ export function DetailTemplate({ id }: DetailTemplateProps) {
   return (
     <section className={styles.container()}>
       <BackButtonAction />
-      <article className={styles.asset()}>
-        <Image layout="fill" objectFit="contain" src={data.icon_url} alt={data.name} />
-      </article>
-      <div className="mt-[22px] rounded-[40px] bg-white24 px-3 py-[6px] text-sm text-primaryInvert">
-        {data.name}
-      </div>
-      <div className={"mt-[18px] flex gap-3 text-[#888582]"}>
-        {data.nutrition_tags.map(({ id, name }) => (
-          <p key={id}>#{name}</p>
-        ))}
+      <div className="my-auto flex h-full flex-col items-center justify-center">
+        <article className={styles.asset()}>
+          <Image layout="fill" objectFit="contain" src={data.icon_url} alt={data.name} />
+        </article>
+        <div className="mt-[22px] w-fit rounded-[40px] bg-white24 px-3 py-[6px] text-sm text-primaryInvert">
+          {data.name}
+        </div>
+        <div className={"mt-[18px] flex gap-3 text-[#888582]"}>
+          {data.nutrition_tags.map(({ id, name }) => (
+            <p key={id}>#{name}</p>
+          ))}
+        </div>
       </div>
       <CookingToolSelect
         id={data.id}

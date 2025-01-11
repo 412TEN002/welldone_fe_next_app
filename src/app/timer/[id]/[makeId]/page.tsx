@@ -34,7 +34,7 @@ export default async function Page({ params }: Props) {
         <article className={styles.makeLayer()}>
           <CustomMakeAction id={id} makeId={makeId} />
         </article>
-        <article>
+        <article className={styles.fireInfoLayer()}>
           <CustomFireInfoAction id={id} makeId={makeId} />
         </article>
         <div className={styles.buttonLayer()}>

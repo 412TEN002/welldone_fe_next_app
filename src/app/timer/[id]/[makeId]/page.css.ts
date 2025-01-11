@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const section = tv({
-  base: ["flex", "flex-col", "items-center", "h-full"],
+  base: ["flex", "flex-col", "items-center", "min-h-screen", "h-full"],
   variants: {
     bg: {
       white: "bg-[#3C3731]",
@@ -27,9 +27,13 @@ export const timerLayer = tv({
 });
 
 export const makeLayer = tv({
-  base: ["h-[300px]", "mt-[58px]", "w-full"],
+  base: ["mt-[40px]", "w-full"],
+});
+
+export const fireInfoLayer = tv({
+  base: ["absolute", "bottom-[130px]", "w-full", "flex", "justify-center"],
 });
 
 export const buttonLayer = tv({
-  base: ["flex", "gap-[12px]", "my-[20px]"],
+  base: ["absolute", "bottom-[40px]", "gap-[12px]", "flex"],
 });

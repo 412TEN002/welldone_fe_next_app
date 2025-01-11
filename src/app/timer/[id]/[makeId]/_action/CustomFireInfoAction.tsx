@@ -24,7 +24,7 @@ export default function CustomFireInfoAction({ id, makeId }: Props) {
       </a>
       <Tooltip
         anchorSelect="#info"
-        place="top"
+        place="bottom"
         opacity="1"
         style={{ background: "#FBF8F2", padding: 0, zIndex: 99 }}
       >
