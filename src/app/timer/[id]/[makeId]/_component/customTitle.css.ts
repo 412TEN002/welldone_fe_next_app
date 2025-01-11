@@ -5,7 +5,7 @@ export const title = tv({
   variants: {
     color: {
       white: "text-[#F3EDE4]",
-      black: "",
+      black: "text-[#51453E]",
     },
   },
 });
