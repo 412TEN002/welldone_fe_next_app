@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDebounce } from "react-use";
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { useOutsideRef } from "@/hooks/useOutsideRef";
@@ -23,6 +23,12 @@ export const HomeCombobox = ({
 
   const { mutate, isPending, isSuccess, reset } = useIngredientAddMutation();
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setSearchOpen(false);
+    }
+  };
+
   return (
     <div className="relative">
       <Command
@@ -42,6 +48,7 @@ export const HomeCombobox = ({
             setValue(target.value);
           }}
           onReset={() => setValue("")}
+          onKeyDown={handleKeyDown}
           placeholder="조리할 채소를 검색해보세요"
         />
         {open && (
