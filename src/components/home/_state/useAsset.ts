@@ -20,7 +20,7 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
   useEffect(() => {
     if (asset.length === 0 || width === 0 || height === 0) return;
 
-    const xPositions = [width * 0.2, width * 0.4, width * 0.6, width * 0.8];
+    const xPositions = [width * 0.1, width * 0.4, width * 0.6, width * 0.9];
 
     asset.forEach(async (datum, index) => {
       const img = new Image();
@@ -50,15 +50,10 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
         restitution: 0.5,
         density: 0.001,
         chamfer: { radius: 5 },
-        velocity: {
-          x: 0,
-          y: -3,
-        },
       });
 
       (body as any).customId = datum.id;
 
-      await new Promise((resolve) => setTimeout(resolve, 20 * index));
       MATTER.Composite.add(engine.world, body);
     });
 

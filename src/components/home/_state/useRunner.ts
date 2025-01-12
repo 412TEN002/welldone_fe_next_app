@@ -8,7 +8,7 @@ type Props = {
 export const useRunner = ({ target }: Props) => {
   const [render, setRender] = useState<MATTER.Render | null>(null);
   const runner = useRef(MATTER.Runner.create());
-  const engine = useRef(MATTER.Engine.create());
+  const engine = useRef(MATTER.Engine.create({ enableSleeping: true }));
 
   const len = useMemo(() => {
     if (!target)
@@ -40,7 +40,7 @@ export const useRunner = ({ target }: Props) => {
     });
 
     engine.current.world.gravity.scale = 0.0016;
-    engine.current.world.gravity.y = 0.7;
+    engine.current.world.gravity.y = 0.8;
 
     setRender(render);
     MATTER.Render.run(render);
