@@ -10,7 +10,7 @@ type Props = {
 export default function CustomOvenPre({ children }: Props) {
   return (
     <div className={styles.layer()}>
-      <Oven />
+      <Oven className="z-20" />
       <div className={styles.action()}>
         <Action />
       </div>

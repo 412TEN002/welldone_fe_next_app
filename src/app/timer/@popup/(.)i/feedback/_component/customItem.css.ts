@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const layer = tv({
-  base: ["flex", "justify-between", "items-center", "w-full"],
+  base: ["flex", "justify-between", "items-center", "w-full", "text-[#3C3731]"],
 });
 
 export const group = tv({

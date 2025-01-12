@@ -11,6 +11,7 @@ export const section = tv({
     "items-center",
     "flex-col",
     "overflow-hidden",
+    "text-[#3C3731]",
   ],
 });
 

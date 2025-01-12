@@ -5,9 +5,9 @@ export const layer = tv({
 });
 
 export const action = tv({
-  base: ["absolute", "left-[-52px]", "bottom-[-60px]"],
+  base: ["absolute", "left-[-40px]", "bottom-[-60px]"],
 });
 
 export const icon = tv({
-  base: ["absolute", "inset-0", "flex", "items-center", "justify-center", "z-10", "mr-[15px]"],
+  base: ["absolute", "inset-0", "flex", "items-center", "justify-center", "z-30", "mr-[15px]"],
 });
