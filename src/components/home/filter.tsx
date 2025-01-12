@@ -25,7 +25,7 @@ export function HomeFilter({ filterId, onFilterIdChange }: HomeFilterProps) {
   };
 
   return (
-    <Dialog.Content className="fixed bottom-0 flex w-dvw flex-col items-center justify-center gap-[2px] rounded-t-2xl bg-primaryInvert">
+    <Dialog.Content className="fixed bottom-0 z-30 flex w-dvw flex-col items-center justify-center gap-[2px] rounded-t-2xl bg-primaryInvert">
       <div className="flex w-full justify-between px-[20px] pt-[22px]">
         <button onClick={handleReset} className="focus:outline-none">
           <Refresh />

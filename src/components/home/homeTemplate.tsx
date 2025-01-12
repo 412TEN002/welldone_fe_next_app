@@ -14,6 +14,8 @@ export function HomeTemplate() {
   const { data: integrationData } = useSuspenseQuery(integrationOption);
 
   const [filterId, setFilterId] = useState<null | number>(null);
+  const [isFilterOpen, setFilterOpen] = useState(false);
+  const [isSearchOpen, setSearchOpen] = useState(false);
 
   const filteringData = useMemo(() => {
     if (isNil(filterId)) {
@@ -26,21 +28,26 @@ export function HomeTemplate() {
     setFilterId(newFilterId);
   };
 
+  const MemoizedHomeAnimation = useMemo(() => {
+    return <HomeAnimation item={filteringData} />;
+  }, [filteringData]);
+
   return (
-    <Dialog.Root>
-      <div className="h-full w-full bg-primary">
-        <div className="absolute flex w-full gap-2 p-5">
-          <HomeCombobox />
+    <div className="relative h-full w-full bg-primary">
+      {isSearchOpen && <div className="fixed inset-0 z-10 bg-overlay" onClick={() => setSearchOpen(false)} />}
+      {isFilterOpen && <div className="fixed inset-0 z-10 bg-overlay" onClick={() => setFilterOpen(false)} />}
+      <div className="absolute z-20 flex w-full gap-2 p-5">
+        <HomeCombobox isSearchOpen={isSearchOpen} setSearchOpen={setSearchOpen} />
+        <Dialog.Root open={isFilterOpen} onOpenChange={setFilterOpen}>
           <Dialog.Trigger className="h-[40px] rounded-[10px] bg-secondary p-2">
             <FilterIcon />
           </Dialog.Trigger>
-        </div>
-        <HomeAnimation item={filteringData} />
+          <Dialog.Portal>
+            <HomeFilter filterId={filterId} onFilterIdChange={handleFilterChange} />
+          </Dialog.Portal>
+        </Dialog.Root>
       </div>
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-overlay" />
-        <HomeFilter filterId={filterId} onFilterIdChange={handleFilterChange} />
-      </Dialog.Portal>
-    </Dialog.Root>
+      {MemoizedHomeAnimation}
+    </div>
   );
 }
