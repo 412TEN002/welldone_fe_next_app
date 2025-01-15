@@ -17,10 +17,19 @@ type Props = {
 export const useAsset = ({ asset, engine, width, height }: Props) => {
   const [isLoading, setIsLoading] = useState(true);
 
+  const getDeviceScale = (screenWidth: number) => {
+    if (screenWidth <= 375) return 0.76;
+    if (screenWidth <= 428) return 0.792;
+    if (screenWidth <= 768) return 0.95;
+    if (screenWidth <= 1024) return 0.99;
+    return 0.9; // 큰 데스크톱
+  };
+
   useEffect(() => {
     if (asset.length === 0 || width === 0 || height === 0) return;
 
-    const xPositions = [width * 0.1, width * 0.4, width * 0.6, width * 0.9];
+    const xPositions = [width * 0.05, width * 0.4, width * 0.6, width * 0.95];
+    const baseScale = getDeviceScale(width);
 
     asset.forEach(async (datum, index) => {
       const img = new Image();
@@ -30,12 +39,12 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
         img.onerror = () => reject(new Error("이미지 업로드 안됨."));
       });
 
-      const scale = 0.7;
+      const scale = baseScale;
       const w = img.width * scale;
       const h = img.height * scale;
 
       const x = xPositions[index % xPositions.length];
-      const y = height - h / 2 - 50 - index * 50;
+      const y = height - h / 2 - 50 - index * 60;
       const adjustedY = Math.max(y, h / 2); // 화면 위를 넘지 않도록 조정
 
       const body = MATTER.Bodies.rectangle(x, adjustedY, w, h, {
@@ -46,10 +55,11 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
             yScale: scale,
           },
         },
-        friction: 0.1,
-        restitution: 0.5,
-        density: 0.001,
-        chamfer: { radius: 5 },
+        friction: 0.05, // 마찰 감소
+        restitution: 0.3, // 적당한 튀김
+        density: 0.001, // 밀도 유지
+        chamfer: { radius: 2 }, // 모서리 덜 둥글게
+        frictionAir: 0.001,
       });
 
       (body as any).customId = datum.id;

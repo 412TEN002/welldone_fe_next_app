@@ -30,7 +30,7 @@ export const HomeCombobox = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Command
         ref={ref}
         className="relative z-20 gap-2"
