@@ -51,3 +51,21 @@ export const useTimer = create<TimerState & TimerAction>((set) => ({
   setStatus: (status) => set(() => ({ status: status })),
   setTime: (time) => set(() => ({ time: time })),
 }));
+
+type HomeFilterState = {
+  categoryId: number | null;
+  selectCategoryId: number | null;
+};
+
+type HomeFilterAction = {
+  setCategoryId: (id: HomeFilterState["categoryId"]) => void;
+  setSelectCategoryId: (id: HomeFilterState["selectCategoryId"]) => void;
+};
+
+export const useHomeFilter = create<HomeFilterState & HomeFilterAction>((set) => ({
+  categoryId: null,
+  selectCategoryId: null,
+
+  setCategoryId: (id) => set(() => ({ categoryId: id })),
+  setSelectCategoryId: (id) => set(() => ({ selectCategoryId: id })),
+}));

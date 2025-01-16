@@ -7,13 +7,11 @@ import { useOutsideRef } from "@/hooks/useOutsideRef";
 import { integrationSearchOption, useIngredientAddMutation } from "@/query-options/integration";
 import { useQuery } from "@tanstack/react-query";
 
-export const HomeCombobox = ({
-  isSearchOpen,
-  setSearchOpen,
-}: {
-  isSearchOpen: boolean;
-  setSearchOpen: (_: boolean) => void;
-}) => {
+type Props = {
+  onTrackable?: (state: boolean) => void;
+};
+
+export const HomeCombobox = ({ onTrackable }: Props) => {
   const [value, setValue] = useState("");
   const [debounceValue, setDebounceValue] = useState(value);
   useDebounce(() => setDebounceValue(value), 20, [value]);
@@ -24,21 +22,18 @@ export const HomeCombobox = ({
   const { mutate, isPending, isSuccess, reset } = useIngredientAddMutation();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setSearchOpen(false);
-    }
+    if (e.key === "Enter" && onTrackable) onTrackable(false);
+  };
+
+  const onFocus = () => {
+    setOpen(true);
+
+    if (onTrackable) onTrackable(true);
   };
 
   return (
     <div className="relative">
-      <Command
-        ref={ref}
-        className="relative z-20 gap-2"
-        onFocus={() => {
-          setOpen(true);
-          setSearchOpen(true);
-        }}
-      >
+      <Command ref={ref} className="relative z-20 gap-2" onFocus={onFocus}>
         <CommandInput
           value={value}
           onChange={({ target }) => {
