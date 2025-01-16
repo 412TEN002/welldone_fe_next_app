@@ -55,11 +55,11 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
             yScale: scale,
           },
         },
-        friction: 0.05, // 마찰 감소
-        restitution: 0.1, // 적당한 튀김
+        friction: 0.08, // 마찰 감소
+        restitution: 0.001, // 적당한 튀김
         density: 0.001, // 밀도 유지
         chamfer: { radius: 2 }, // 모서리 덜 둥글게
-        frictionAir: 0.001,
+        frictionAir: 0.032,
       });
 
       (body as any).customId = datum.id;

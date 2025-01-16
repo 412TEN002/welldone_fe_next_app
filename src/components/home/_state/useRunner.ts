@@ -31,30 +31,30 @@ export const useRunner = ({ target }: Props) => {
       engine: engine.current,
       options: {
         width: len.width,
-        height: len.height * 2,
-        wireframes: false,
+        height: len.height * 1.8,
+        wireframes: true,
         background: "#3c3731",
         pixelRatio: 2,
         showSleeping: false,
       },
     });
 
-    engine.current.world.gravity.scale = 0.0027;
-    engine.current.world.gravity.y = 0.5;
+    engine.current.world.gravity.scale = 0.002;
+    engine.current.world.gravity.y = 0.9;
 
     setRender(render);
     MATTER.Render.run(render);
     MATTER.Runner.run(runner.current, engine.current);
 
     MATTER.Render.lookAt(render, {
-      min: { x: 0, y: len.height },
-      max: { x: len.width, y: len.height * 2 },
+      min: { x: 0, y: len.height * 0.8 },
+      max: { x: len.width, y: len.height * 1.8 },
     });
 
     MATTER.Events.on(engine, "beforeUpdate", () => {
       MATTER.Composite.allBodies(engine.current.world).forEach((body) => {
         body.velocity.x = Math.max(Math.min(body.velocity.x, 10), -10);
-        body.velocity.y = Math.max(Math.min(body.velocity.y, 8), -10);
+        body.velocity.y = Math.max(Math.min(body.velocity.y, 10), -10);
       });
     });
 

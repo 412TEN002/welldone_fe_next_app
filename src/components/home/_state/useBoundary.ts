@@ -24,13 +24,19 @@ export const useBoundary = ({ engine, width, height }: Props) => {
       MATTER.Bodies.rectangle(width / 2, -THICKNESS / 2, width + THICKNESS * 2, THICKNESS, OPTION),
       MATTER.Bodies.rectangle(
         width / 2,
-        height * 2 + THICKNESS / 2,
+        height * 1.8 + THICKNESS / 2,
         width + THICKNESS * 2,
         THICKNESS,
         OPTION,
       ),
-      MATTER.Bodies.rectangle(-THICKNESS / 2, height, THICKNESS, height * 2 + THICKNESS * 2, OPTION),
-      MATTER.Bodies.rectangle(width + THICKNESS / 2, height, THICKNESS, height * 2 + THICKNESS * 2, OPTION),
+      MATTER.Bodies.rectangle(-THICKNESS / 2, height * 0.9, THICKNESS, height * 1.8 + THICKNESS * 2, OPTION),
+      MATTER.Bodies.rectangle(
+        width + THICKNESS / 2,
+        height * 0.9,
+        THICKNESS,
+        height * 1.8 + THICKNESS * 2,
+        OPTION,
+      ),
     ];
 
     MATTER.Composite.add(engine.world, boundaries);
