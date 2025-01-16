@@ -9,5 +9,5 @@ export const action = tv({
 });
 
 export const icon = tv({
-  base: ["absolute", "inset-0", "flex", "items-center", "justify-center", "z-30", "mr-[15px]"],
+  base: ["absolute", "inset-0", "flex", "items-center", "justify-center", "z-30", "mr-[30px]"],
 });
