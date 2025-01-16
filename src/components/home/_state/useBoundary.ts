@@ -5,7 +5,7 @@ const OPTION = {
   isStatic: true,
   render: { visible: false },
   friction: 0.2,
-  restitution: 0.4,
+  restitution: 0,
 };
 
 const THICKNESS = 100;
@@ -22,9 +22,15 @@ export const useBoundary = ({ engine, width, height }: Props) => {
 
     const boundaries = [
       MATTER.Bodies.rectangle(width / 2, -THICKNESS / 2, width + THICKNESS * 2, THICKNESS, OPTION),
-      MATTER.Bodies.rectangle(width / 2, height + THICKNESS / 2, width + THICKNESS * 2, THICKNESS, OPTION),
-      MATTER.Bodies.rectangle(-THICKNESS / 2, height / 2, THICKNESS, height + THICKNESS * 2, OPTION),
-      MATTER.Bodies.rectangle(width + THICKNESS / 2, height / 2, THICKNESS, height + THICKNESS * 2, OPTION),
+      MATTER.Bodies.rectangle(
+        width / 2,
+        height * 2 + THICKNESS / 2,
+        width + THICKNESS * 2,
+        THICKNESS,
+        OPTION,
+      ),
+      MATTER.Bodies.rectangle(-THICKNESS / 2, height, THICKNESS, height * 2 + THICKNESS * 2, OPTION),
+      MATTER.Bodies.rectangle(width + THICKNESS / 2, height, THICKNESS, height * 2 + THICKNESS * 2, OPTION),
     ];
 
     MATTER.Composite.add(engine.world, boundaries);

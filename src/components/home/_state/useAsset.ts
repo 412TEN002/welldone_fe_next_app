@@ -56,7 +56,7 @@ export const useAsset = ({ asset, engine, width, height }: Props) => {
           },
         },
         friction: 0.05, // 마찰 감소
-        restitution: 0.3, // 적당한 튀김
+        restitution: 0.1, // 적당한 튀김
         density: 0.001, // 밀도 유지
         chamfer: { radius: 2 }, // 모서리 덜 둥글게
         frictionAir: 0.001,

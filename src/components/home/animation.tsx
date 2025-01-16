@@ -7,6 +7,7 @@ import { useBoundary } from "@/components/home/_state/useBoundary";
 import { useMouseAction } from "@/components/home/_state/useMouseAction";
 import { useRunner } from "@/components/home/_state/useRunner";
 import { IntegrationType } from "@/query-options/integration";
+import * as styles from "./animation.css";
 
 interface AnimationProps {
   item: IntegrationType[];
@@ -25,11 +26,8 @@ export function HomeAnimation({ item }: AnimationProps) {
   const { isLoading } = useAsset({ asset: item, engine, width, height });
 
   return (
-    <div
-      className="flex h-full w-full touch-none items-center justify-center overflow-hidden"
-      ref={setContainerRef}
-    >
-      {isLoading ? <p className="animate-pulse text-white">...로딩 중</p> : null}
+    <div className={styles.layer()} ref={setContainerRef}>
+      {isLoading ? <p className={styles.loading()}>...로딩 중</p> : null}
     </div>
   );
 }
