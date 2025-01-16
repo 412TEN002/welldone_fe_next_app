@@ -33,12 +33,6 @@ export const HomeCombobox = ({ onTrackable }: Props) => {
 
   return (
     <div className="relative w-full">
-      <Command
-        ref={ref}
-        className="relative z-20 gap-2"
-        onFocus={onFocus}
-      >
-    <div className="relative">
       <Command ref={ref} className="relative z-20 gap-2" onFocus={onFocus}>
         <CommandInput
           value={value}
