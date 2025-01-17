@@ -32,7 +32,7 @@ export const useRunner = ({ target }: Props) => {
       options: {
         width: len.width,
         height: len.height * 1.8,
-        wireframes: true,
+        wireframes: false,
         background: "#3c3731",
         pixelRatio: 2,
         showSleeping: false,
