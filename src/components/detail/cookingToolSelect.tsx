@@ -1,15 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { tv } from "tailwind-variants";
-import CustomResultButton from "@/components/detail/CustomResultButton";
+import CloseButtonAction from "@/components/detail/_action/CloseButtonAction";
+import ResultButtonAction from "@/components/detail/_action/ResultButtonAction";
+import CustomAssetItem from "@/components/detail/_component/CustomAssetItem";
 import * as styles from "./cookingToolSelect.css";
-
-export const buttonBase = tv({
-  base: ["flex", "items-center", "justify-center", "py-[14px]", "text-white", "flex-grow", "rounded-lg"],
-});
 
 type Props = {
   id: number;
@@ -19,6 +15,8 @@ type Props = {
 };
 
 export function CookingToolSelect(props: Props) {
+  const { container, layerGroup, layer, layerOverflow, title, resultLayer } = styles.cooking();
+
   const [state, setState] = useState(() => props.tools[0].id);
   const router = useRouter();
 
@@ -39,31 +37,26 @@ export function CookingToolSelect(props: Props) {
   }, [prefetchNextPage]);
 
   return (
-    <div className={styles.container()}>
-      <div className={styles.layerGroup()}>
-        <span className={styles.title()}>조리도구를 선택해주세요.</span>
-        <div className={styles.layer()}>
-          <div className={styles.layerOverflow()}>
+    <div className={container()}>
+      <div className={layerGroup()}>
+        <span className={title()}>조리도구를 선택해주세요.</span>
+        <div className={layer()}>
+          <div className={layerOverflow()}>
             {props.tools.map(({ id, name, icon_url, description }) => (
-              <button
+              <CustomAssetItem
                 key={id}
-                className={styles.button({ select: id === state ? "yes" : "no" })}
+                name={name}
+                description={description}
+                image={icon_url}
                 onClick={onClickButton(id)}
-              >
-                <Image src={icon_url} width={68} height={45} alt={name} />
-                <div className="flex flex-col items-start gap-[5px]">
-                  <p className="font-bold text-primary">{name}</p>
-                  <p className="text-left text-xs text-[#948C84]">{description}</p>
-                </div>
-              </button>
+                isSelect={id === state}
+              />
             ))}
           </div>
         </div>
-        <div className={"mb-[20px] mt-4 flex w-full gap-3"}>
-          <button className={buttonBase({ class: "bg-[#88847E]" })} onClick={() => router.back()}>
-            취소
-          </button>
-          <CustomResultButton makeId={state} {...props} />
+        <div className={resultLayer()}>
+          <CloseButtonAction />
+          <ResultButtonAction makeId={state} {...props} />
         </div>
       </div>
     </div>

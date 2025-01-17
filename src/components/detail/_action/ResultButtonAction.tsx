@@ -1,8 +1,6 @@
-"use client";
-
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
-import { buttonBase } from "@/components/detail/cookingToolSelect";
+import CustomButton from "@/components/detail/_component/CustomButton";
 import { useSelect } from "@/state/useTranslate";
 
 type Props = {
@@ -12,7 +10,7 @@ type Props = {
   icon: string;
 };
 
-export default function CustomResultButton({ id, makeId, name, icon }: Props) {
+export default function ResultButtonAction({ id, makeId, name, icon }: Props) {
   const router = useRouter();
   const { setSelect } = useSelect();
   const isNavigating = useRef(false);
@@ -29,16 +27,11 @@ export default function CustomResultButton({ id, makeId, name, icon }: Props) {
     });
   }, [id, makeId, name, icon, router, setSelect]);
 
-  // 컴포넌트 언마운트 시 클린업
   useEffect(() => {
     return () => {
       isNavigating.current = false;
     };
   }, []);
 
-  return (
-    <button className={buttonBase({ class: "bg-primary" })} onClick={onResult}>
-      완료
-    </button>
-  );
+  return <CustomButton text="완료" className="bg-primary" onClick={onResult} />;
 }
