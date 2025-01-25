@@ -15,12 +15,25 @@ type Props = {
 
 export default function CustomTimerAction({ id, makeId }: Props) {
   const { localData } = useCookingSettings({ id, makeId });
-
   const { setTip } = useSelect();
   const { time: currTime, setTime: setCurrTime, status, setStatus } = useTimer();
   const router = useRouter();
 
   const ref = useRef<Date | null>(null);
+
+  const playAudioOnce = () => {
+    return new Promise<void>((resolve) => {
+      const audio = new Audio("/com.mp3");
+      audio.onended = () => resolve();
+      audio.play();
+    });
+  };
+
+  const playAudioThreeTimes = async () => {
+    for (let i = 0; i < 3; i++) {
+      await playAudioOnce();
+    }
+  };
 
   const tick = () => {
     const now = new Date();
@@ -34,9 +47,7 @@ export default function CustomTimerAction({ id, makeId }: Props) {
       setTip(localData.tips.e);
 
       router.push("/timer/i/end");
-
-      const audio = new Audio("/com.mp3");
-      audio.play();
+      playAudioThreeTimes();
     }
   };
 
