@@ -16,6 +16,10 @@ export default function CustomStartButton(props: Props & HTMLMotionProps<"button
       type="button"
       className={styles.button({ className: isLong ? "px-[100px]" : "px-[52px]", bg: theme })}
       {...rest}
+      style={{ borderRadius: "24px" }}
+      transition={{
+        width: { duration: 1, ease: "easeInOut" },
+      }}
     >
       {children}
     </motion.button>

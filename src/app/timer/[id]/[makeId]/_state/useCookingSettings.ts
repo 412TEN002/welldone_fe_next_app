@@ -47,5 +47,7 @@ export const useCookingSettings = ({ id, makeId }: Props) => {
     };
   }, [data]);
 
+  localData.theme = "white";
+
   return { localData };
 };
