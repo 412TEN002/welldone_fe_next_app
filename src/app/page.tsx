@@ -8,9 +8,6 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 export default async function Home() {
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery(integrationOption);
-  await queryClient.prefetchQuery(categoryOption);
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <HomeTemplate />

@@ -8,9 +8,6 @@ export default async function Page({ params }: { params: Promise<{ id: number }>
   const id = (await params).id;
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery(cookingToolOptions);
-  await queryClient.prefetchQuery(integrationDetailOption(id));
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <DetailTemplate id={id} />
