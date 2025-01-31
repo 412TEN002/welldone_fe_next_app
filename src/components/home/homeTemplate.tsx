@@ -25,10 +25,6 @@ export function HomeTemplate() {
     return integrationData.filter((item) => Number(item.category_id) === Number(categoryId));
   }, [integrationData, categoryId]);
 
-  const MemoizedHomeAnimation = useMemo(() => {
-    return <HomeAnimation item={filteringData} />;
-  }, [filteringData]);
-
   const onTrackableOpen = (state: boolean) => {
     setOpen(state);
   };
@@ -54,7 +50,7 @@ export function HomeTemplate() {
           <FilterIcon />
         </span>
       </div>
-      {MemoizedHomeAnimation}
+      <HomeAnimation item={filteringData} />
     </div>
   );
 }
