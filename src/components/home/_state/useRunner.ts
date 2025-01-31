@@ -9,6 +9,12 @@ export const useRunner = ({ target }: Props) => {
   const [render, setRender] = useState<MATTER.Render | null>(null);
   const runner = useRef(MATTER.Runner.create());
   const engine = useRef(MATTER.Engine.create({ enableSleeping: true }));
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    setInitialized(true);
+    return () => setInitialized(false);
+  }, []);
 
   const len = useMemo(() => {
     if (!target)
@@ -67,7 +73,7 @@ export const useRunner = ({ target }: Props) => {
       render.canvas.remove();
       render.textures = {};
     };
-  }, [target, len, engine, runner]);
+  }, [target, len, initialized]);
 
   return { render, engine: engine.current, runner: runner.current, width: len.width, height: len.height };
 };

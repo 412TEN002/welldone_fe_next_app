@@ -1,7 +1,7 @@
 "use client";
 
 import Matter from "matter-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAsset } from "@/components/home/_state/useAsset";
 import { useBoundary } from "@/components/home/_state/useBoundary";
 import { useMouseAction } from "@/components/home/_state/useMouseAction";
