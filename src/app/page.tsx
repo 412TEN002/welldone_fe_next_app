@@ -8,11 +8,22 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 export default async function Home() {
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery(integrationOption);
-  await queryClient.prefetchQuery(categoryOption);
+  const prefetchPromises = [
+    queryClient.prefetchQuery(integrationOption),
+    queryClient.prefetchQuery(categoryOption),
+  ];
+
+  try {
+    await Promise.all(prefetchPromises);
+  } catch (error) {
+    console.error("Prefetch failed:", error);
+  }
+
+  // 초기 상태를 스냅샷으로 저장
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
+    <HydrationBoundary state={dehydratedState}>
       <HomeTemplate />
     </HydrationBoundary>
   );
