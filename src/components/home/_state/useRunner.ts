@@ -67,7 +67,7 @@ export const useRunner = ({ target }: Props) => {
       render.canvas.remove();
       render.textures = {};
     };
-  }, [target, len]);
+  }, [target, len, engine, runner]);
 
   return { render, engine: engine.current, runner: runner.current, width: len.width, height: len.height };
 };
