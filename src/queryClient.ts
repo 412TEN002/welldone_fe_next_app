@@ -18,9 +18,11 @@ function makeQueryClient() {
 let browserQueryClient: QueryClient | undefined = undefined;
 
 export function getQueryClient() {
-  if (typeof window !== undefined) {
+  if (typeof window === "undefined") {
+    // 서버 사이드
     return makeQueryClient();
   } else {
+    // 클라이언트 사이드
     if (!browserQueryClient) browserQueryClient = makeQueryClient();
     return browserQueryClient;
   }
