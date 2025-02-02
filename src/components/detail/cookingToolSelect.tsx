@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import CloseButtonAction from "@/components/detail/_action/CloseButtonAction";
@@ -37,7 +38,15 @@ export function CookingToolSelect(props: Props) {
   }, [prefetchNextPage]);
 
   return (
-    <div className={container()}>
+    <motion.div
+      className={container()}
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.2,
+        ease: "easeOut",
+      }}
+    >
       <div className={layerGroup()}>
         <span className={title()}>조리도구를 선택해주세요.</span>
         <div className={layer()}>
@@ -59,6 +68,6 @@ export function CookingToolSelect(props: Props) {
           <ResultButtonAction makeId={state} {...props} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

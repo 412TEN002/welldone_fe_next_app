@@ -10,5 +10,5 @@ export default function CloseButtonAction() {
     router.back();
   };
 
-  return <CustomButton onClick={onClickClose} text="취소" className="bg-[#88847E]" />;
+  return <CustomButton onClick={onClickClose} text="취소" className="w-full bg-[#88847E]" />;
 }
