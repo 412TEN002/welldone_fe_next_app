@@ -46,8 +46,8 @@ export default function CustomTimerAction({ id, makeId }: Props) {
       setCurrTime(localData.time);
       setTip(localData.tips.e);
 
-      router.push("/timer/i/end");
       playAudioThreeTimes();
+      router.push("/timer/i/end");
     }
   };
 
