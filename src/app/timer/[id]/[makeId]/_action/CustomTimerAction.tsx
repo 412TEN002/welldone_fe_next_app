@@ -21,17 +21,11 @@ export default function CustomTimerAction({ id, makeId }: Props) {
 
   const ref = useRef<Date | null>(null);
 
-  const playAudioOnce = () => {
-    return new Promise<void>((resolve) => {
-      const audio = new Audio("/com.mp3");
-      audio.onended = () => resolve();
-      audio.play();
-    });
-  };
-
-  const playAudioThreeTimes = async () => {
-    for (let i = 0; i < 3; i++) {
-      await playAudioOnce();
+  const sendStatusToFlutter = (status: TimerStatus) => {
+    try {
+      window.TimerStatusChannel?.postMessage(JSON.stringify(status));
+    } catch (e) {
+      console.error("Failed to send status to Flutter:", e);
     }
   };
 
@@ -41,15 +35,26 @@ export default function CustomTimerAction({ id, makeId }: Props) {
 
     setCurrTime(timeRemaining);
 
+    sendStatusToFlutter({
+      status: timeRemaining === 0 ? "pause" : "play",
+      time: timeRemaining,
+    });
+
     if (timeRemaining === 0) {
       setStatus("pause");
       setCurrTime(localData.time);
       setTip(localData.tips.e);
 
-      playAudioThreeTimes();
       router.push("/timer/i/end");
     }
   };
+
+  useEffect(() => {
+    sendStatusToFlutter({
+      status,
+      time: currTime,
+    });
+  }, [status, currTime]);
 
   useEffect(() => {
     if (status === "play") {
@@ -67,6 +72,11 @@ export default function CustomTimerAction({ id, makeId }: Props) {
       setCurrTime(0);
       setStatus("pause");
       setTip("");
+
+      sendStatusToFlutter({
+        status: "pause",
+        time: 0,
+      });
     };
   }, [localData.time]);
 
