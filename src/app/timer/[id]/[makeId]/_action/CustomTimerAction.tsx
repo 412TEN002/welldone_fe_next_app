@@ -35,26 +35,15 @@ export default function CustomTimerAction({ id, makeId }: Props) {
 
     setCurrTime(timeRemaining);
 
-    sendStatusToFlutter({
-      status: timeRemaining === 0 ? "pause" : "play",
-      time: timeRemaining,
-    });
-
     if (timeRemaining === 0) {
       setStatus("pause");
       setCurrTime(localData.time);
       setTip(localData.tips.e);
+      sendStatusToFlutter({ status: "end" }); // 타이머가 끝났을 때 end 상태 전송
 
       router.push("/timer/i/end");
     }
   };
-
-  useEffect(() => {
-    sendStatusToFlutter({
-      status,
-      time: currTime,
-    });
-  }, [status, currTime]);
 
   useEffect(() => {
     if (status === "play") {
@@ -72,11 +61,6 @@ export default function CustomTimerAction({ id, makeId }: Props) {
       setCurrTime(0);
       setStatus("pause");
       setTip("");
-
-      sendStatusToFlutter({
-        status: "pause",
-        time: 0,
-      });
     };
   }, [localData.time]);
 

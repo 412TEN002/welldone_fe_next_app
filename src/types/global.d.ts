@@ -7,5 +7,4 @@ interface Window {
 
 type TimerStatus = {
   status: "play" | "pause" | "resume" | "end" | "reset";
-  time: number;
 };
