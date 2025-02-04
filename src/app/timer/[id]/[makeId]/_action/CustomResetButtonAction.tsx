@@ -8,9 +8,9 @@ import { useCookingSettings } from "@/app/timer/[id]/[makeId]/_state/useCookingS
 import { useTimer } from "@/state/useTranslate";
 
 const variants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
+  initial: { opacity: 0, scale: 1.05 },
+  animate: { opacity: 1, scale: 1.0 },
+  exit: { opacity: 0, scale: 0.9 },
 };
 
 type Props = {

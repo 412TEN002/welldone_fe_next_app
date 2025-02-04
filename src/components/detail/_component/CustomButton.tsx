@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import * as styles from "./customButton.css";
 
 type Props = {
@@ -9,8 +10,13 @@ type Props = {
 
 export default function CustomButton({ text, onClick, className }: Props) {
   return (
-    <button className={styles.button({ class: className })} onClick={onClick}>
+    <motion.button
+      className={styles.button({ class: className })}
+      onClick={onClick}
+      whileTap={{ scale: 0.9 }}
+      transition={{ duration: 0.3 }}
+    >
       {text}
-    </button>
+    </motion.button>
   );
 }

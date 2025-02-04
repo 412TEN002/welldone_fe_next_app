@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -36,10 +37,18 @@ export const HomeCombobox = ({ onTrackable }: Props) => {
     if (onTrackable) onTrackable(true);
   };
 
+  const MotionCommandList = motion(CommandList);
+
   // 검색 결과와 추가 요청 버튼을 함께 표시
   const renderResults = () => {
     return (
-      <CommandList className="bg-tertiary">
+      <MotionCommandList
+        className="bg-tertiary"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2, ease: "easeInOut" }}
+      >
         {/* 검색 결과 표시 */}
         {Array.isArray(data) &&
           data.map(({ id, name, icon_url }) => (
@@ -51,32 +60,32 @@ export const HomeCombobox = ({ onTrackable }: Props) => {
             </Link>
           ))}
 
+        {/* 검색 결과가 없을 때 메시지 */}
+        {value.length > 0 && (!Array.isArray(data) || data.length === 0) && (
+          <CommandEmpty className="text-white opacity-30">
+            <div className="px-4 py-[14px]">검색 결과가 없어요</div>
+          </CommandEmpty>
+        )}
+
         {/* 정확한 매칭이 없을 때 추가 요청 섹션 표시 */}
         {value.length > 0 && !hasExactMatch && (
           <>
-            <div className="h-[1px] w-full bg-white opacity-15" />
-            <div className="flex items-center justify-center px-4 py-[14px] text-white opacity-15">
+            <div className="h-[1px] w-full bg-white opacity-30" />
+            <div className="flex items-center justify-center px-4 py-[10px] text-white opacity-30">
               {isPending ? (
                 <div>...로딩 중</div>
               ) : isSuccess ? (
                 <div className="text-sm">요청 완료! 조금만 기다려주세요</div>
               ) : (
                 <button
-                  className="rounded-[28px] border-[1px] border-white px-[14px] py-2"
+                  className="rounded-[28px] border-[1px] border-white px-[14px] py-2 text-sm"
                   onClick={() => mutate(value)}
                 >{`'${value}' 추가 요청하기`}</button>
               )}
             </div>
           </>
         )}
-
-        {/* 검색 결과가 없을 때 메시지 */}
-        {value.length > 0 && (!Array.isArray(data) || data.length === 0) && (
-          <CommandEmpty className="text-white opacity-15">
-            <div className="px-4 py-[14px]">검색 결과가 없어요</div>
-          </CommandEmpty>
-        )}
-      </CommandList>
+      </MotionCommandList>
     );
   };
 
@@ -95,7 +104,7 @@ export const HomeCombobox = ({ onTrackable }: Props) => {
           onKeyDown={handleKeyDown}
           placeholder="조리할 채소를 검색해보세요"
         />
-        {open && renderResults()}
+        <AnimatePresence>{open && renderResults()}</AnimatePresence>
       </Command>
     </div>
   );

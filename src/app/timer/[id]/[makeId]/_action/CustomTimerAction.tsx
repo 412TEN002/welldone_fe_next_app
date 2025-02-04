@@ -21,17 +21,11 @@ export default function CustomTimerAction({ id, makeId }: Props) {
 
   const ref = useRef<Date | null>(null);
 
-  const playAudioOnce = () => {
-    return new Promise<void>((resolve) => {
-      const audio = new Audio("/com.mp3");
-      audio.onended = () => resolve();
-      audio.play();
-    });
-  };
-
-  const playAudioThreeTimes = async () => {
-    for (let i = 0; i < 3; i++) {
-      await playAudioOnce();
+  const sendStatusToFlutter = (status: TimerStatus) => {
+    try {
+      window.TimerStatusChannel?.postMessage(JSON.stringify(status));
+    } catch (e) {
+      console.error("Failed to send status to Flutter:", e);
     }
   };
 
@@ -45,9 +39,9 @@ export default function CustomTimerAction({ id, makeId }: Props) {
       setStatus("pause");
       setCurrTime(localData.time);
       setTip(localData.tips.e);
+      sendStatusToFlutter({ status: "end" }); // 타이머가 끝났을 때 end 상태 전송
 
       router.push("/timer/i/end");
-      playAudioThreeTimes();
     }
   };
 

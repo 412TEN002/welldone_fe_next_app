@@ -33,5 +33,5 @@ export default function ResultButtonAction({ id, makeId, name, icon }: Props) {
     };
   }, []);
 
-  return <CustomButton text="완료" className="bg-primary" onClick={onResult} />;
+  return <CustomButton text="완료" className="w-full bg-primary" onClick={onResult} />;
 }

@@ -1,6 +1,4 @@
 import { DetailTemplate } from "@/components/detail/detailTemplate";
-import { cookingToolOptions } from "@/query-options/cooking-tool";
-import { integrationDetailOption } from "@/query-options/integration";
 import { getQueryClient } from "@/queryClient";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
