@@ -11,7 +11,6 @@ export const container = tv({
     "px-[16px]",
     "gap-[8px]",
     "transition-all",
-    "duration-300",
   ],
   variants: {
     rounded: {
