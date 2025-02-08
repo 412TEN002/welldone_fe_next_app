@@ -4,7 +4,7 @@ export const container = tv({
   base: [
     "w-full",
     "h-[50px]",
-    "bg-[#F3EDE4]",
+    "bg-[#47423D]",
     "flex",
     "items-center",
     "relative",
@@ -26,11 +26,11 @@ export const arrow = tv({
 });
 
 export const mainText = tv({
-  base: ["text-[#51453E]", "text-[14px]", "font-semibold"],
+  base: ["text-[#C0BCB6]", "text-[14px]", "font-semibold"],
 });
 
 export const optionLayer = tv({
-  base: ["absolute", "right-0", "left-0", "top-[50px]", "bg-[#F3EDE4]", "rounded-b-[12px]", "z-[999]"],
+  base: ["absolute", "right-0", "left-0", "top-[50px]", "bg-[#47423D]", "rounded-b-[12px]", "z-[999]"],
 });
 
 export const innerOptionLayer = tv({
@@ -42,6 +42,7 @@ export const innerOptionLayer = tv({
     "flex-col",
     "border-t-[1px]",
     "border-[#DED8CF]",
+    "border-opacity-10",
     "gap-[20px]",
   ],
 });
@@ -67,9 +68,9 @@ export const content = tv({
 });
 
 export const comma = tv({
-  base: ["min-w-[3px]", "h-[3px]", "bg-[#51453E]", "rounded-full", "mr-[8px]", "ml-[10px]", "mt-[7px]"],
+  base: ["min-w-[3px]", "h-[3px]", "bg-[#C0BCB6]", "rounded-full", "mr-[8px]", "ml-[10px]", "mt-[7px]"],
 });
 
 export const contentText = tv({
-  base: ["text-[14px]", "font-regular", "text-[#51453E]"],
+  base: ["text-[14px]", "font-regular", "text-[#C0BCB6]"],
 });
