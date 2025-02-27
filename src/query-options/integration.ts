@@ -14,7 +14,7 @@ export interface IntegrationType {
 export const integrationOption = queryOptions({
   queryKey: ["integration"],
   queryFn: async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ingredients`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/ingredients/`);
     const data: IntegrationType[] = await response.json();
     return data;
   },

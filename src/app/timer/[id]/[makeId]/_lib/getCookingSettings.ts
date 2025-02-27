@@ -22,7 +22,7 @@ export const getCookingSettings: QueryFunction<
     cooking_tool_id: `${makeId}`,
   });
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/cooking-settings?${params}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/cooking-settings/?${params}`);
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
