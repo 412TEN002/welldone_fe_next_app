@@ -67,10 +67,10 @@ export const viewport: Viewport = {
   initialScale: 1,
   userScalable: false,
   maximumScale: 1,
+  minimumScale: 1,
   viewportFit: "cover",
   height: "device-height",
 };
-
 type Props = {
   children: ReactNode;
   dialog: ReactNode;
