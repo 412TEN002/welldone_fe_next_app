@@ -31,7 +31,7 @@ export default function CustomInitAnimate({ children }: Props) {
             position: "fixed",
             inset: 0,
             background: "rgba(0,0,0,0.3)",
-            zIndex: 99,
+            zIndex: 999,
           }}
         >
           <motion.div
